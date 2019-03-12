@@ -1,0 +1,64 @@
+<!--
+  Generated template for the ProfilePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>profile</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+	
+	<ion-list>
+		<ion-item>
+			<ion-label floating >First Name</ion-label>
+			<ion-input type="text" [(ngModel)]="fName$"></ion-input>
+				
+		</ion-item>
+		<button block ion-button (click)="updateFirstName()">updateFirstName</button>
+
+		<ion-item>
+			<ion-label floating>Last Name</ion-label>
+			<ion-input type="text" [(ngModel)]="lName$"></ion-input>
+		</ion-item>
+		<button block ion-button (click)="updateLastName()">updateLastName</button>
+	
+		<ion-item>
+			<ion-label floating>Dog Name</ion-label>
+			<ion-input type="text" [(ngModel)]="dogName$"></ion-input>
+		</ion-item>
+		<button block ion-button (click)="updateDogName()">updateDogName</button>
+
+		<ion-item>
+			<ion-label floating>Looking For</ion-label>
+			<ion-input type="text" [(ngModel)]="lookingFor$"></ion-input>
+		</ion-item>
+		<button block ion-button (click)="updateLookingFor()">updateLookingFor</button>
+
+		<ion-item>
+			<ion-label floating>Snap Description</ion-label>
+			<ion-input type="text" [(ngModel)]="snapDescription$"></ion-input>
+		</ion-item>
+		<button block ion-button (click)="updateSnapDescription()">updateSnapDescription</button>
+		
+		<ion-item>
+			<ion-label floating>Likes / Dislikes</ion-label>
+			<ion-input type="text" [(ngModel)]="likesDislikes$"></ion-input>
+		</ion-item>
+		<button block ion-button (click)="updateLikesDislikes()">updateLikesDislikes</button>
+
+		<div padding>
+			<button block ion-button (click)="updateInfo()">Update All Info</button>
+		</div>
+		</ion-list>
+
+	
+
+</ion-content>

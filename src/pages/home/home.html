@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+     SBarky 
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<div padding>
+		<button block ion-button (click)="searching()">Start Searching</button>
+	</div>
+	<div padding>
+		<button block ion-button (click)="yourPals()">Your Pals</button>
+	</div>
+	<div padding>
+		<button block ion-button (click)="settings()">Settings</button>
+	</div>
+	<div padding>
+		<button block ion-button (click)="yourProfile()">Your Profile</button>
+	</div>
+	<div padding>
+		<button block ion-button (click)="addDog()">Add a Dog</button>
+	</div>
+	<div>
+	{{ uid }}
+	</div>
+</ion-content>
