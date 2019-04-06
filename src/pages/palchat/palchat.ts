@@ -12,6 +12,9 @@ import { AddpalchatroomPage } from '../addpalchatroom/addpalchatroom';
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
+ * 
+ * THIS PAGE SHOULD ALREADY KNOW WHO YOUR FRIEND IS
+ * START MESSAGE IMPLEMENTATION HERE
  */
 
 @IonicPage()
@@ -30,7 +33,6 @@ export class PalchatPage {
   toUname: string;
   fromUname: string;
   
-
   	//Constructor, includes ctrls, etc..
     constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events, public   afDB: AngularFireDatabase, private afs: AngularFirestore, private platform: Platform) {
 
@@ -44,7 +46,6 @@ export class PalchatPage {
   //Constructor to navigate to add-room page
   addRoom(){
     this.navCtrl.push(AddpalchatroomPage);
-
   }
 
   ionViewDidLoad() {

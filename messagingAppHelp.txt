@@ -1,0 +1,9 @@
+Chat APP help:
+
+https://angularfirebase.com/lessons/build-group-chat-with-firestore/#AngularFire-Chat-App
+
+Episode 75 for User Auth 
+
+Episode 55 for details on Auth service
+
+Watch RXJS for Firestore joins

@@ -11,6 +11,11 @@ import { PalchatPage } from '../palchat/palchat';
  * Ionic pages and navigation.
  */
 
+ /**
+  * This page will display anyone you have talked to or want to talk to?
+  * Searching will help you find new pals to talk to
+  */
+
 @IonicPage()
 @Component({
   selector: 'page-pals',
@@ -35,7 +40,7 @@ export class PalsPage {
 
   
 
-  }
+  }//end constructor
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PalsPage');
