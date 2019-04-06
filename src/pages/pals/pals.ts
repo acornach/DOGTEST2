@@ -47,7 +47,11 @@ export class PalsPage {
   }
 
   palchat(){
-    this.navCtrl.push(PalchatPage);
+    this.navCtrl.push(PalchatPage)
+    .then(() => {
+      this.events.publish('data:created', this.uid);
+      console.log('Published', this.uid);
+    });
   }
 
 }

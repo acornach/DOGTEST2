@@ -25,11 +25,8 @@ export class LoginPage {
   @ViewChild('password') password;
   uid: string;	//Store the user's id for use in the database
   
-
     constructor(private fire:AngularFireAuth,public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, public events: Events) {
-
-	}
-	
+	  }//end constructor
 	
     ionViewDidLoad() {
     	console.log('ionViewDidLoad LoginPage');
@@ -37,24 +34,23 @@ export class LoginPage {
 
     alert(message: string){
     	this.alertCtrl.create({
-	title: 'Info',
-	subTitle: message,
-	buttons: ['OK']
-    
+				title: 'Info',
+				subTitle: message,
+				buttons: ['OK']				
     	}).present();
     }
-    
-    signInUser(){//Should validate a valid email address before sending to firebase
+		
+		//TODO: MORE ADVANCE AUTH SYSTEM HERE!!!!
+    signInUser(){//Should validate email address before sending to firebase
     	this.fire.auth.signInWithEmailAndPassword(this.user.value, this.password.value)
 		.then( data => {//Firebase will log in successfully
 			//this.alert('Successful login');//alert the user
-			this.uid = this.fire.auth.currentUser.uid;
+			this.uid = this.fire.auth.currentUser.uid;//Stores user ID
 			this.navCtrl.push( HomePage )
 			.then(() => {
 				this.events.publish('data:created', this.uid);
 				console.log('Published', this.uid);
 		});
-		
 		
 		//this.sendData(this.uid);
 		//this.alert(this.uid);
