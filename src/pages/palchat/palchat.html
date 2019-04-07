@@ -12,9 +12,46 @@
 
 </ion-header>
 
-
+<!-- OLD HTML
 <ion-content padding>
   <div padding>
     <button block ion-button (click)="addRoom()">Add Chat  </button>
   </div>
 </ion-content>
+
+
+TODO:: LOOK FOR HELP FROM USER PROFILE PAGE FOR POPULATING DATA AND MESSAGES
+TODO:: MAKE SURE YOU USE AN NG-REPEAT, THOUGH!!!
+-->
+<ng-container *ngIf="chat$ | async as chat">
+
+  <div class="top">
+    <p>
+      https://firetest1-ccc03.firebaseio.com/chats/{{ chat.id }}
+    </p>
+  </div>
+
+
+  <div class="chat">
+
+
+    <div class="msg" *ngFor="let msg of chat.messages; trackBy: trackByCreated">
+
+      <div class="user">
+        <img [src]="msg.user?.photoURL">
+        <div>{{ msg.user?.displayName }}</div>
+      </div>
+
+      <p>{{ msg.content }}</p>
+
+    </div>
+
+  </div>
+
+  <div class="form">
+    <input [(ngModel)]="newMsg" (keydown.enter)="submit(chat.id)">
+
+    <button (click)="submit(chat.id)">Send</button>
+  </div>
+
+</ng-container>

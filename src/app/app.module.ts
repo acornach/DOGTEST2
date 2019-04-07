@@ -28,6 +28,7 @@ import { LogoutPage } from '../pages/logout/logout';
 import { UpgradePage } from '../pages/upgrade/upgrade';
 import { PalchatPage } from '../pages/palchat/palchat';
 import { AddpalchatroomPage } from '../pages/addpalchatroom/addpalchatroom';
+import { ChatServiceProvider } from '../providers/chat-service/chat-service';
 
 
 
@@ -94,7 +95,8 @@ const firebaseAuth = {
     StatusBar,
 		SplashScreen,
 		Geolocation,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    ChatServiceProvider
   ]
 })
 export class AppModule {}
