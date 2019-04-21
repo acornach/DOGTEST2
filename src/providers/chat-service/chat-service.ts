@@ -69,4 +69,36 @@ export class ChatServiceProvider {
     }
   }
 
+  //URGENT THIS SEEMS TO BE BREAKING IT
+  joinUsers(chat$: Observable<any>) {
+    let chat;
+    const joinKeys = {};
+    console.log("chat$: ");console.log(chat$);
+    //if(chat$){
+      return chat$.pipe(
+        switchMap(c => {
+          // Unique User IDs
+          chat = c;
+          const uids = Array.from(new Set(c.messages.map(v => v.uid)));
+          console.log("uids: ");console.log(uids);
+          // Firestore User Doc Reads
+          const userDocs = uids.map(u =>
+            this.afs.doc('users/${u}').valueChanges()
+          );
+          console.log("user docs:");console.log(userDocs);
+          return userDocs.length ? combineLatest(userDocs) : of([]);
+        }),
+        map(arr => {
+          console.log("arr:");console.log(arr);
+          arr.forEach(v => (joinKeys[(<any>v).uid] = v));
+          chat.messages = chat.messages.map(v => {
+            return { ...v, user: joinKeys[v.uid] };
+          });
+    
+          return chat;
+        })
+      );
+    //}
+  }
+
 }

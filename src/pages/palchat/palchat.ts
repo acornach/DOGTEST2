@@ -50,13 +50,17 @@ export class PalchatPage implements OnInit {
 
       //TODO: Check to see if Document exists first
       this.cs.create(this.uid).then(value => {
-        this.chatId = value.toString();
-        console.log('New chat ID: ' + this.chatId);
+        this.chatId = value.toString(); console.log("this.chatId: " + this.chatId);
+        const source = this.cs.get(this.chatId); console.log(source);
+        this.chat$ = source;//this.cs.joinUsers(source); console.log(this.chat$);
+        //console.log('New chat ID: ' + this.chatId);
       });//TODO: how to get chatId from create properly
     });
   }
 
+  //URGENT NEXT: FIGURE OUT WHERE IS CHATID
   submit(chatId) {
+    console.log("uid" + this.uid + "\nchatID " + this.chatId + "\n" + this.newMsg);
     this.cs.sendMessage(this.uid, chatId, this.newMsg);
     this.newMsg = '';//reset new message
   }
