@@ -118,4 +118,12 @@ export class SearchingPage {
       friendList: this.possiblePalID
     });
   }
+
+  
+  updatePal(newPal){//TODO: update pals to database here somehow!!
+    //TODO: add one item: https://stackoverflow.com/questions/46757614/how-to-update-an-array-of-objects-with-firestore
+    //  this.afs.collection<any>('humanProfile').doc(this.uid).update({ 
+  //    friendList: this.possiblePalID
+  //  });
+  }
 }

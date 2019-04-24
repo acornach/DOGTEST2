@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Item } from 'ionic-angular';
 import { Events } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { PalchatPage } from '../palchat/palchat';
-
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 /**
  * Generated class for the PalsPage page.
  *
@@ -24,11 +24,22 @@ import { PalchatPage } from '../palchat/palchat';
 export class PalsPage {
   uid: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events, private geolocation: Geolocation ) {
+  myPals: Array<string>;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events, private geolocation: Geolocation,private afs: AngularFirestore ) {
 	
 	this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
 		console.log( data);
-		this.uid = data;
+    this.uid = data;
+    afs.doc<Item>('humanProfile/'+this.uid).valueChanges().subscribe( res => {
+			if(res){
+        //TODO: pull array data from firebase
+        this.myPals = data["friendList"];
+        console.log(this.myPals);
+
+      }
+    });
+
   });
   
   this.geolocation.getCurrentPosition().then((resp) => {
