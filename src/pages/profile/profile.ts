@@ -44,6 +44,7 @@ export class ProfilePage {
 	private lookingFor: string;
 	private snapDescription: string;
 	private likesDislikes: string;
+	private publicID: string;
 
 	private dogPhotoPath: string;	//Fetched from Firebase image
 	private humanPhotoPath: string;	//Fetched from Firebase image
@@ -90,6 +91,7 @@ export class ProfilePage {
 					this.snapDescription$ = this.snapDescription,
 					this.likesDislikes = data["likesDislikes"],
 					this.likesDislikes$ = this.likesDislikes
+					this.publicID = data["publicID"];
 				}); //Access by value
 			}
 			else{
@@ -154,6 +156,17 @@ export class ProfilePage {
 		
 	}
 
+	 makeid(length) {
+		var result           = '';
+		var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		var charactersLength = characters.length;
+		for ( var i = 0; i < length; i++ ) {
+			 result += characters.charAt(Math.floor(Math.random() * charactersLength));
+		}
+		return result;
+ }
+ 
+
 	updateInfo(){
 		
 		//This line will create a document in humanProfile collection with the ID
@@ -164,7 +177,9 @@ export class ProfilePage {
 			lookingFor: this.lookingFor$,
 			snapDescription: this.snapDescription$,
 			likesDislikes: this.likesDislikes$,
-			UID: this.uid
+			UID: this.uid,
+			publicID: this.makeid(10)
+
 		});
 
 	}

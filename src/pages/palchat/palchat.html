@@ -38,7 +38,7 @@ TODO:: MAKE SURE YOU USE AN NG-REPEAT,
     <div class="msg" *ngFor="let msg of chat.messages; trackBy: trackByCreated">
 
       <div class="user">
-        <img [src]="msg.user?.photoURL">
+      <!--  <img [src]="msg.user?.photoURL"> -->
         <div>{{ msg.user?.displayName }}</div>
       </div>
 
