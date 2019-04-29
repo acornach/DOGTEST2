@@ -34,8 +34,8 @@ export class PalsPage {
     afs.doc<Item>('humanProfile/'+this.uid).valueChanges().subscribe( res => {
 			if(res){
         //TODO: pull array data from firebase
-        this.myPals = data["friendList"];
-        console.log(this.myPals);
+        this.myPals = res["friendList"];
+        console.log("myPals-------------");console.log(this.myPals);
 
       }
     });
