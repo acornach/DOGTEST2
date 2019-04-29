@@ -65,4 +65,13 @@ export class PalsPage {
     });
   }
 
+  chatPal(pal){
+    this.navCtrl.push(PalchatPage)
+    .then(() => {
+      this.events.publish('data:created', this.uid);
+      this.events.publish('data:created', pal);
+      console.log('Published', this.uid, pal);
+    });
+  }
+
 }
