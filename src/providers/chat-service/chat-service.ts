@@ -34,12 +34,13 @@ export class ChatServiceProvider {
     );
   }
 
-  async create(uid){
+  async create(uid1, uid2){
     //const { uid } = await this.auth.getUser(); // USE THIS METHOD EVENTUALLY
     console.log('TRYING TO CREATE');
     //creates a new chat document
     const data = {
-      uid,
+      uid1,
+      uid2,
       createdAt: Date.now(),
       count: 0,//Number of messages in chat document??
       messages:[]//Messages
@@ -47,7 +48,7 @@ export class ChatServiceProvider {
 
     const docRef = await this.afs.collection('chats').add(data);//Create document in fireBase
 
-    //They are using router, we are just going to pass back the Id of the chat room
+    //We just pass back the Id of the chat room
     //The other page might have to use the NavCtrl or we should maybe do it here
     console.log("ID: " + docRef.id.toString());
     return docRef.id.toString();
@@ -69,7 +70,8 @@ export class ChatServiceProvider {
     }
   }
 
-  //URGENT THIS SEEMS TO BE BREAKING IT
+  //TODO: Learn to understand this
+  //It might fix our uid1, uid2 Issue someday
   joinUsers(chat$: Observable<any>) {
     let chat;
     const joinKeys = {};
@@ -80,16 +82,17 @@ export class ChatServiceProvider {
           // Unique User IDs
           chat = c;
           const uids = Array.from(new Set(c.messages.map(v => v.uid)));
-          console.log("uids: ");console.log(uids);
+          //console.log("uids: ");console.log(uids);
+          
           // Firestore User Doc Reads
           const userDocs = uids.map(u =>
             this.afs.doc('users/${u}').valueChanges()
           );
-          console.log("user docs:");console.log(userDocs);
+          //onsole.log("user docs:");console.log(userDocs);
           return userDocs.length ? combineLatest(userDocs) : of([]);
         }),
         map(arr => {
-          console.log("arr:");console.log(arr);
+          //console.log("arr:");console.log(arr);
           arr.forEach(v => (joinKeys[(<any>v).uid] = v));
           chat.messages = chat.messages.map(v => {
             return { ...v, user: joinKeys[v.uid] };
@@ -100,5 +103,4 @@ export class ChatServiceProvider {
       );
     //}
   }
-
 }

@@ -28,6 +28,7 @@ export class PalchatPage implements OnInit {
 
   //UID's for to/from are on document names only
   uid: string;
+  palid: string;
   chatId: string;//Each chat between you and a pal will recieve an ID that needs to be stored somewhere
   toId: string;	
   newMsg: string;
@@ -44,12 +45,13 @@ export class PalchatPage implements OnInit {
   //On Init, get the uid from the event and create the new chat document
   ngOnInit() {
     //get uid
-    this.events.subscribe('data:created', (data) => {	//TODO: GET UID from AUTH
-      console.log( data);
+    this.events.subscribe('data:created', (data, pal) => {	//TODO: GET UID from AUTH
+      console.log("Data Created!!"); console.log( data, pal);
       this.uid = data;
+      this.palid = pal;
 
       //TODO: Check to see if Document exists first
-      this.cs.create(this.uid).then(value => {
+      this.cs.create(this.uid, this.palid).then(value => {
         this.chatId = value.toString(); console.log("this.chatId: " + this.chatId);
         const source = this.cs.get(this.chatId); console.log(source);
         this.chat$ = source;//this.cs.joinUsers(source); console.log(this.chat$);

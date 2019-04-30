@@ -48,9 +48,6 @@ export class PalsPage {
      }).catch((error) => {
        console.log('Error getting location', error);
      });
-
-  
-
   }//end constructor
 
   ionViewDidLoad() {
@@ -68,8 +65,8 @@ export class PalsPage {
   chatPal(pal){
     this.navCtrl.push(PalchatPage)
     .then(() => {
-      this.events.publish('data:created', this.uid);
-      this.events.publish('data:created', pal);
+      this.events.publish('data:created', this.uid, pal);
+     // this.events.publish('pal:created', pal);
       console.log('Published', this.uid, pal);
     });
   }
