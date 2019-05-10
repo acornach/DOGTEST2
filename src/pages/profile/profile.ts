@@ -42,6 +42,7 @@ export class ProfilePage {
 	private lastName: string;	//Fetched from Firebase document
 	private dogName: string;	//Fetched from Firebase document
 	private lookingFor: string;
+	private chats: Array<string>; //Placeholder for chats
 	private snapDescription: string;
 	private likesDislikes: string;
 	private publicID: string;
@@ -66,6 +67,7 @@ export class ProfilePage {
 	this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
 		//console.log( data);
 		this.uid = data;
+		this.chats = [""];//LOSE THIS ONCE RESET ALL USER DOCS
 
 		//once the user id is found, we can see if the user's document exists
 		//CHeck if document exists:
@@ -90,8 +92,9 @@ export class ProfilePage {
 					this.snapDescription = data["snapDescription"],
 					this.snapDescription$ = this.snapDescription,
 					this.likesDislikes = data["likesDislikes"],
-					this.likesDislikes$ = this.likesDislikes
-					this.publicID = data["publicID"];
+					this.likesDislikes$ = this.likesDislikes,
+					this.publicID = data["publicID"],
+					this.chats = data["chats"]
 				}); //Access by value
 			}
 			else{
@@ -178,7 +181,8 @@ export class ProfilePage {
 			snapDescription: this.snapDescription$,
 			likesDislikes: this.likesDislikes$,
 			UID: this.uid,
-			publicID: this.makeid(10)
+			publicID: this.makeid(10),
+			chats: this.chats
 
 		});
 
