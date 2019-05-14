@@ -31,12 +31,13 @@ export class PalchatPage implements OnInit {
   //UID's for to/from are on document names only
   uid: string;
   palid: string;
+  chatLoaded: number;
   chatId: string;//Each chat between you and a pal will recieve an ID that needs to be stored somewhere
   toId: string;	
   newMsg: string;
   chat$: Observable<any>;
   buddyArray = Array<string>();
-  hasChat: boolean;
+  hasChat: boolean = true;//Assume they have a chat already, This is part of the hacky chat fix
   private itemDoc: AngularFirestoreDocument<Item>;
   private itemCollection: Observable<{}[]>;
   //Usernames for to/from
@@ -45,6 +46,18 @@ export class PalchatPage implements OnInit {
   
   	//Constructor, includes ctrls, etc..
     constructor(private auth: AngularFireAuth,public navCtrl: NavController, public navParams: NavParams, public events: Events, public   afDB: AngularFireDatabase, private afs: AngularFirestore, private platform: Platform, public cs: ChatServiceProvider) {
+      
+      this.events.subscribe('data:created', (data, pal) => {	//TODO: GET UID from AUTH
+        console.log("Data Created!!"); console.log( data, pal);
+        this.uid = data;
+        this.palid = pal;
+        this.chatLoaded = 0;//Set that no chat has been loaded
+        var oldChat: string;
+  
+        this.checkForChat(oldChat);//once data is created, call the check for old chat function
+      
+  
+      });//end SUBSCRIBE
     }//end constructor
 
   async updatePage(){
@@ -52,7 +65,45 @@ export class PalchatPage implements OnInit {
 
   }
 
+  async checkForChat(oldChat){
+    if(this.uid){//Don't try anything if there is no userId defined
+      new Promise(ref => {
+        this.afs.collection('humanProfile').doc(this.uid).valueChanges().subscribe( res => {
+        this.buddyArray = res["chats"];
+        for(var buddy of this.buddyArray){
+          //console.log("BUDDY:",buddy);
+          
+          if(buddy != "")
+            var BUD = this.afs.collection('chats').doc(buddy).valueChanges().subscribe( bud =>{
+              var uid1 = bud['uid1'];
+              var uid2 = bud['uid2'];
+              if(this.palid == uid1 || this.palid == uid2){
+                console.log("TRUE!");
+                this.hasChat = true;
+                oldChat = buddy;
+                this.chatId = oldChat;
+                if(this.chatLoaded < 1)
+                  return this.grabChat();
+              }
+              else{
+                this.hasChat = false; //Assign hasChat to false if no chat is found
+              }
+            });
+        
+          }
+          if(this.hasChat == false) { //has chat can only be set to false by the inner if statement above
+            console.log("FALSE!");
+            if(this.chatLoaded < 1) //Don't try to create a chat if one has already been made
+              return this.createChat();
+          }
+        })
+      });//end promise
+  }
+
+
+  }
   createChat(){
+    this.chatLoaded = 1;
     //IF NO CHAT EXISTS:
     this.cs.create(this.uid, this.palid).then(value => {
       this.chatId = value.toString(); console.log("this.chatId: " + this.chatId);
@@ -61,50 +112,26 @@ export class PalchatPage implements OnInit {
       this.afs.collection('humanProfile').doc(this.uid).update({
         chats: firestore.FieldValue.arrayUnion(this.chatId)
       });
-});
+    });
   }
+
+  grabChat(){
+    //IF FOUND A CHAT
+    this.chatLoaded = 1;
+    const source = this.cs.get(this.chatId); console.log(source);
+    this.chat$ = source;
+    this.afs.collection('humanProfile').doc(this.uid).update({
+      chats: firestore.FieldValue.arrayUnion(this.chatId)
+    });
+  }
+
   //On Init, get the uid from the event and create the new chat document
   ngOnInit() {
     //get uid
-    this.events.subscribe('data:created', (data, pal) => {	//TODO: GET UID from AUTH
-      console.log("Data Created!!"); console.log( data, pal);
-      this.uid = data;
-      this.palid = pal;
-      this.hasChat = false;
-      var oldChat: string;
+    //IDEA: MAKE BUDDY AREA GLOBAL ON LOAD OF PROGRAM
 
-      //IDEA: MAKE BUDDY AREA GLOBAL ON LOAD OF PROGRAM
-      const ref = this.afs.collection('humanProfile').doc(this.uid).valueChanges().subscribe( res => {
-        this.buddyArray = res["chats"];
-        var hasChat = false;
-        for(var buddy of this.buddyArray){
-          console.log("BUDDY:",buddy);
-          
-          if(buddy != "")
-          var BUD = this.afs.collection('chats').doc(buddy).valueChanges().subscribe( bud =>{
-            var uid1 = bud['uid1'];
-            var uid2 = bud['uid2'];
-            if(this.palid == uid1 || this.palid == uid2){
-              console.log("TRUE!");
-              this.hasChat = true;
-              oldChat = buddy;
-            }
-          });//end subscribe
-          
-        }
-        
-      });
-
-      if(this.hasChat){
-        console.log("CHAT FOUND!", oldChat);
-      }
-      else{
-        //this.createChat();
-        console.log("CREATING CHAT!");
-      }
-
-    }); //end SUBSCRIBE
-  }//end CONSTRUCTOR
+   
+  }//end on init
 
   //URGENT NEXT: FIGURE OUT WHERE IS CHATID
   submit(chatId) {
