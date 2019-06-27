@@ -29,7 +29,7 @@ import { UpgradePage } from '../pages/upgrade/upgrade';
 import { PalchatPage } from '../pages/palchat/palchat';
 import { AddpalchatroomPage } from '../pages/addpalchatroom/addpalchatroom';
 import { ChatServiceProvider } from '../providers/chat-service/chat-service';
-
+import { DogsPage } from '../pages/dogs/dogs';
 
 
 const firebaseAuth = {
@@ -47,20 +47,21 @@ const firebaseAuth = {
     HomePage,
     LoginPage,
     RegisterPage,
-	TestdatabasePage,
-	StartupPage,
-	AdddogPage,
-	ProfilePage,
-	SearchingPage,
-	PalsPage,
-	SettingsPage,
-	ChangepassPage,
-	SearchradiusPage,
-	HelpPage,
-	LogoutPage,
-	UpgradePage,
-	PalchatPage,
-	AddpalchatroomPage
+		TestdatabasePage,
+		StartupPage,
+		AdddogPage,
+		ProfilePage,
+		SearchingPage,
+		PalsPage,
+		SettingsPage,
+		ChangepassPage,
+		SearchradiusPage,
+		HelpPage,
+		LogoutPage,
+		UpgradePage,
+		PalchatPage,
+		AddpalchatroomPage,
+		DogsPage
   ],
   imports: [
     BrowserModule,
@@ -76,20 +77,21 @@ const firebaseAuth = {
     HomePage,
     LoginPage,
     RegisterPage,
-	TestdatabasePage,
-	StartupPage,
-	AdddogPage,
-	ProfilePage,
-	SearchingPage,
-	PalsPage,
-	SettingsPage,
-	ChangepassPage,
-	SearchradiusPage,
-	HelpPage,
-	LogoutPage,
-	UpgradePage,
-	PalchatPage,
-	AddpalchatroomPage
+		TestdatabasePage,
+		StartupPage,
+		AdddogPage,
+		ProfilePage,
+		SearchingPage,
+		PalsPage,
+		SettingsPage,
+		ChangepassPage,
+		SearchradiusPage,
+		HelpPage,
+		LogoutPage,
+		UpgradePage,
+		PalchatPage,
+		AddpalchatroomPage,
+		DogsPage
   ],
   providers: [
     StatusBar,

@@ -10,7 +10,7 @@ import { ProfilePage } from '../profile/profile';
 import { SearchingPage } from '../searching/searching';
 import { PalsPage } from '../pals/pals';
 import { SettingsPage } from '../settings/settings';
-
+import { DogsPage } from '../dogs/dogs'
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs/Observable';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
@@ -89,44 +89,51 @@ export class HomePage {
 
   searching(){
   	this.navCtrl.push(SearchingPage)
-	.then(() => {
-				this.events.publish('data:created', this.uid);
-				console.log('Published', this.uid);
-	});
+		.then(() => {
+					this.events.publish('data:created', this.uid);
+					console.log('Published', this.uid);
+		});
   }
   
   yourPals(){
   	this.navCtrl.push(PalsPage)
-	.then(() => {
-				this.events.publish('data:created', this.uid);
-				console.log('Published', this.uid);
-	});
+		.then(() => {
+					this.events.publish('data:created', this.uid);
+					console.log('Published', this.uid);
+		});
   }
   
   settings(){
   	this.navCtrl.push(SettingsPage)
-	.then(() => {
-				this.events.publish('data:created', this.uid);
-				console.log('Published', this.uid);
-	});
+		.then(() => {
+					this.events.publish('data:created', this.uid);
+					console.log('Published', this.uid);
+		});
   }
   
   yourProfile(){
   	this.navCtrl.push(ProfilePage)
-	.then(() => {
-				this.events.publish('data:created', this.uid);
-				console.log('Published', this.uid);
-	});
+		.then(() => {
+					this.events.publish('data:created', this.uid);
+					console.log('Published', this.uid);
+		});
   }
   
   addDog(){
   	this.navCtrl.push(AdddogPage)
-	.then(() => {
-				this.events.publish('data:created', this.uid);
-				console.log('Published', this.uid);
-	});
+		.then(() => {
+					this.events.publish('data:created', this.uid);
+					console.log('Published', this.uid);
+		});
   }
 
+	dogs(){
+		this.navCtrl.push(DogsPage)
+		.then(() => {
+					this.events.publish('data:created', this.uid);
+					console.log('Published', this.uid);
+		});
+	}
 
 
 
