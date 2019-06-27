@@ -131,7 +131,7 @@ export class HomePage {
 		this.navCtrl.push(DogsPage)
 		.then(() => {
 					this.events.publish('data:created', this.uid);
-					console.log('Published', this.uid);
+					console.log('DOGS!!!', this.uid);
 		});
 	}
 

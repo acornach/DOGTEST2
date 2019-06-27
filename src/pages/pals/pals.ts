@@ -28,26 +28,26 @@ export class PalsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events, private geolocation: Geolocation,private afs: AngularFirestore ) {
 	
-	this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
-		console.log( data);
-    this.uid = data;
-    afs.doc<Item>('humanProfile/'+this.uid).valueChanges().subscribe( res => {
-			if(res){
-        //TODO: pull array data from firebase
-        this.myPals = res["friendList"];
-        console.log("myPals-------------");console.log(this.myPals);
+    this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
+      console.log( data);
+      this.uid = data;
+      afs.doc<Item>('humanProfile/'+this.uid).valueChanges().subscribe( res => {
+        if(res){
+          //TODO: pull array data from firebase
+          this.myPals = res["friendList"];
+          console.log("myPals-------------");console.log(this.myPals);
 
-      }
+        }
+      });
+    });
+      
+    this.geolocation.getCurrentPosition().then((resp) => {
+        console.log("Lat:  " + resp.coords.latitude);
+        console.log("Long: " + resp.coords.longitude);
+    }).catch((error) => {
+        console.log('Error getting location', error);
     });
 
-  });
-  
-  this.geolocation.getCurrentPosition().then((resp) => {
-      console.log("Lat:  " + resp.coords.latitude);
-      console.log("Long: " + resp.coords.longitude);
-     }).catch((error) => {
-       console.log('Error getting location', error);
-     });
   }//end constructor
 
   ionViewDidLoad() {
