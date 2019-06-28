@@ -38,6 +38,7 @@ export class DogsPage {
     this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
       console.log( data);
       this.uid = data;
+      //Initialize all arrays with one empty string so push works
       this.allDogs = [""];
       this.allDogs1 = [""];
       this.allDogs2 = [""];
@@ -57,25 +58,25 @@ export class DogsPage {
             this.allDogs.push(dog['name']);
           if(dog['intense'] == true && dog['social'] == true && dog['playStyle'] == "contact")
             this.allDogs1.push(dog['name']);
-            if(dog['intense'] == true && dog['social'] == true && dog['playStyle'] == "interactive")
+            if(dog['intense'] == true && dog['social'] == true && dog['playStyle'] == "interact")
               this.allDogs2.push(dog['name']);
               if(dog['intense'] == true && dog['social'] == true && dog['playStyle'] == "none")
                 this.allDogs3.push(dog['name']);
                 if(dog['intense'] == true && dog['social'] == false && dog['playStyle'] == "contact")
                   this.allDogs4.push(dog['name']);
-                  if(dog['intense'] == true && dog['social'] == false && dog['playStyle'] == "interactive")
+                  if(dog['intense'] == true && dog['social'] == false && dog['playStyle'] == "interact")
                     this.allDogs5.push(dog['name']);
                     if(dog['intense'] == true && dog['social'] == false && dog['playStyle'] == "none")
                       this.allDogs6.push(dog['name']);
                       if(dog['intense'] == false && dog['social'] == true && dog['playStyle'] == "contact")
                         this.allDogs7.push(dog['name']);
-                        if(dog['intense'] == false && dog['social'] == true && dog['playStyle'] == "interactive")
+                        if(dog['intense'] == false && dog['social'] == true && dog['playStyle'] == "interact")
                           this.allDogs8.push(dog['name']);
                           if(dog['intense'] == false && dog['social'] == true && dog['playStyle'] == "none")
                             this.allDogs9.push(dog['name']);
                             if(dog['intense'] == false && dog['social'] == false && dog['playStyle'] == "contact")
                               this.allDogs10.push(dog['name']);
-                              if(dog['intense'] == false && dog['social'] == false && dog['playStyle'] == "interactive")
+                              if(dog['intense'] == false && dog['social'] == false && dog['playStyle'] == "interact")
                                 this.allDogs11.push(dog['name']);
                                 if(dog['intense'] == false && dog['social'] == false && dog['playStyle'] == "none")
                                   this.allDogs12.push(dog['name']);

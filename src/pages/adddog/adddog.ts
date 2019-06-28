@@ -56,4 +56,16 @@ export class AdddogPage {
 
   }
 
+  //WHILE CREATING ALGORITHM, TIE TO HUMAN LATER
+  tempAddDogName(){
+    this.afs.collection('dogProfile').doc(this.afs.createId()).set({
+      name: this.dogName$,
+      parent: this.uid,
+      fixed: true,
+      intense: true,
+      playStyle: "contact",
+      social: true
+		});
+  }
+
 }
