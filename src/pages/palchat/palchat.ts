@@ -49,13 +49,13 @@ export class PalchatPage implements OnInit {
       
       this.events.subscribe('data:created', (data, pal) => {	//TODO: GET UID from AUTH
         console.log("Data Created!!"); console.log( data, pal);
+        //Gets both the user ID and the Pal to message ID from chats.ts
         this.uid = data;
         this.palid = pal;
         this.chatLoaded = 0;//Set that no chat has been loaded
-        var oldChat: string;
+        var oldChat: string;//will store ID of old chat if one is found?
   
         this.checkForChat(oldChat);//once data is created, call the check for old chat function
-      
   
       });//end SUBSCRIBE
     }//end constructor
@@ -68,16 +68,26 @@ export class PalchatPage implements OnInit {
   async checkForChat(oldChat){
     if(this.uid){//Don't try anything if there is no userId defined
       new Promise(ref => {
+        //Each humanProfile has an array of chats. The array stores the uid of people they have chatted with
         this.afs.collection('humanProfile').doc(this.uid).valueChanges().subscribe( res => {
         this.buddyArray = res["chats"];
+        
+        //If has no chats at all yet, start a new one
+        if(this.buddyArray.length == 0)
+          return this.createChat();
+
+        //For each friend in your buddy array see if you have an active chat already
         for(var buddy of this.buddyArray){
           //console.log("BUDDY:",buddy);
           
           if(buddy != "")
+            //This will look in the chats collection. Chats will store the uid of both parties and an array of messages
             var BUD = this.afs.collection('chats').doc(buddy).valueChanges().subscribe( bud =>{
               var uid1 = bud['uid1'];
               var uid2 = bud['uid2'];
-              if(this.palid == uid1 || this.palid == uid2){
+
+              //If either uid is equal to the palid, then
+              if((this.palid == uid1 && this.uid == uid2) || (this.uid == uid1 && this.palid == uid2)){
                 console.log("TRUE!");
                 this.hasChat = true;
                 oldChat = buddy;
@@ -86,14 +96,15 @@ export class PalchatPage implements OnInit {
                   return this.grabChat();
               }
               else{
-                this.hasChat = false; //Assign hasChat to false if no chat is found
+                //this.hasChat = false; //Assign hasChat to false if no chat is found
               }
             });
         
           }
           if(this.hasChat == false) { //has chat can only be set to false by the inner if statement above
             console.log("FALSE!");
-            if(this.chatLoaded < 1) //Don't try to create a chat if one has already been made
+            this.hasChat = true;
+            //if(this.chatLoaded < 1) //Don't try to create a chat if one has already been made
               return this.createChat();
           }
         })
@@ -104,11 +115,14 @@ export class PalchatPage implements OnInit {
   }
   createChat(){
     this.chatLoaded = 1;
-    //IF NO CHAT EXISTS:
+    this.hasChat = true;
+    //IF NO CHAT EXISTS, create one between both members
     this.cs.create(this.uid, this.palid).then(value => {
       this.chatId = value.toString(); console.log("this.chatId: " + this.chatId);
       const source = this.cs.get(this.chatId); console.log(source);
       this.chat$ = source;
+
+      //MAYBE add value to other user as well
       this.afs.collection('humanProfile').doc(this.uid).update({
         chats: firestore.FieldValue.arrayUnion(this.chatId)
       });
