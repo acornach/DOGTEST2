@@ -66,16 +66,19 @@ export class PalchatPage implements OnInit {
   }
 
   async checkForChat(oldChat){
+
     if(this.uid){//Don't try anything if there is no userId defined
       new Promise(ref => {
         //Each humanProfile has an array of chats. The array stores the uid of people they have chatted with
         this.afs.collection('humanProfile').doc(this.uid).valueChanges().subscribe( res => {
         this.buddyArray = res["chats"];
+        this.hasChat = false;//Intitialize hasChat to false before looping
         
         //If has no chats at all yet, start a new one
         if(this.buddyArray.length == 0)
           return this.createChat();
 
+        
         //For each friend in your buddy array see if you have an active chat already
         for(var buddy of this.buddyArray){
           //console.log("BUDDY:",buddy);
@@ -104,7 +107,7 @@ export class PalchatPage implements OnInit {
           if(this.hasChat == false) { //has chat can only be set to false by the inner if statement above
             console.log("FALSE!");
             this.hasChat = true;
-            //if(this.chatLoaded < 1) //Don't try to create a chat if one has already been made
+            if(this.chatLoaded < 1) //Don't try to create a chat if one has already been made
               return this.createChat();
           }
         })
