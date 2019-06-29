@@ -72,50 +72,54 @@ export class PalchatPage implements OnInit {
         //Each humanProfile has an array of chats. The array stores the uid of people they have chatted with
         this.afs.collection('humanProfile').doc(this.uid).valueChanges().subscribe( res => {
         this.buddyArray = res["chats"];
+        var openChats = res["openChats"];
         this.hasChat = false;//Intitialize hasChat to false before looping
-        
+        if(openChats.includes(this.palid))
+          this.hasChat = true;
         //If has no chats at all yet, start a new one
         if(this.buddyArray.length == 0)
           return this.createChat();
-
+        if(this.hasChat == false)
+          return this.createChat();
         
-        //For each friend in your buddy array see if you have an active chat already
+
+        //For each friend in your buddy array find the chat
         for(var buddy of this.buddyArray){
           //console.log("BUDDY:",buddy);
           
-          if(buddy != "")
+          if(buddy != ""){
             //This will look in the chats collection. Chats will store the uid of both parties and an array of messages
             var BUD = this.afs.collection('chats').doc(buddy).valueChanges().subscribe( bud =>{
               var uid1 = bud['uid1'];
               var uid2 = bud['uid2'];
 
-              //If either uid is equal to the palid, then
+              //If either uid is equal to the palid, then load the chat
               if((this.palid == uid1 && this.uid == uid2) || (this.uid == uid1 && this.palid == uid2)){
                 console.log("TRUE!");
                 this.hasChat = true;
                 oldChat = buddy;
                 this.chatId = oldChat;
-                if(this.chatLoaded < 1)
+                //if(this.chatLoaded < 1)
                   return this.grabChat();
               }
               else{
                 //this.hasChat = false; //Assign hasChat to false if no chat is found
               }
             });
-        
           }
+        }
+          /*
           if(this.hasChat == false) { //has chat can only be set to false by the inner if statement above
             console.log("FALSE!");
             this.hasChat = true;
             if(this.chatLoaded < 1) //Don't try to create a chat if one has already been made
               return this.createChat();
-          }
+          }*/
         })
       });//end promise
-  }
+    }
+  }//end old chat
 
-
-  }
   createChat(){
     this.chatLoaded = 1;
     this.hasChat = true;
@@ -128,6 +132,9 @@ export class PalchatPage implements OnInit {
       //MAYBE add value to other user as well
       this.afs.collection('humanProfile').doc(this.uid).update({
         chats: firestore.FieldValue.arrayUnion(this.chatId)
+      });
+      this.afs.collection('humanProfile').doc(this.uid).update({
+        openChats: firestore.FieldValue.arrayUnion(this.palid)
       });
     });
   }
