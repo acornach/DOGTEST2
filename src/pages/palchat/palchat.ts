@@ -10,6 +10,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { firestore } from 'firebase/app';
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 import { updateDate } from 'ionic-angular/umd/util/datetime-util';
+import { ElementSchemaRegistry } from '@angular/compiler';
 /**
  * Generated class for the PalchatPage page.
  *
@@ -30,6 +31,7 @@ export class PalchatPage implements OnInit {
 
   //UID's for to/from are on document names only
   uid: string;
+  chatCreated: boolean = false;
   palid: string;
   chatLoaded: number;
   chatId: string;//Each chat between you and a pal will recieve an ID that needs to be stored somewhere
@@ -54,8 +56,14 @@ export class PalchatPage implements OnInit {
         this.palid = pal;
         this.chatLoaded = 0;//Set that no chat has been loaded
         var oldChat: string;//will store ID of old chat if one is found?
-  
+        
         this.checkForChat(oldChat);//once data is created, call the check for old chat function
+        //have check For Chat return the promise object
+        //Must use send on all paths
+
+        //Here check the data from the promise, do the if/elses here
+
+        //The promise will pass back a JSON document which you can use to get the info
   
       });//end SUBSCRIBE
     }//end constructor
@@ -68,8 +76,56 @@ export class PalchatPage implements OnInit {
   async checkForChat(oldChat){
 
     if(this.uid){//Don't try anything if there is no userId defined
-      new Promise(ref => {
+      
         //Each humanProfile has an array of chats. The array stores the uid of people they have chatted with
+        const BUDDY = this.afs.collection('humanProfile').doc(this.uid).get().toPromise()
+        .then(budArray => {//wait until promise is fullfilled
+          const buddyArray = budArray.data().friendList;//Stores ID of Buddy
+          const chatsArray = budArray.data().chats; //Stores CHAT ID
+          const openChats = budArray.data().openChats;//Stores ID of Buddy
+          
+
+          //SHOULD HAVE ARRAYS NOW
+          if((buddyArray.length == 0 || openChats.length == 0) && this.chatCreated == false){
+            this.chatCreated = true;
+            return this.createChat();
+            //UNNECESSARY????
+          }
+          else if((openChats.includes(this.palid) ) && this.chatCreated == false){
+            //TODO: Find Correct CHAT ID!!!
+            const promises = [];
+
+            for(const chat of chatsArray){
+              const p = this.afs.collection('chats').doc(chat).get().toPromise()
+              .then(doc => { 
+                //promises.push(doc)
+                const u1 = doc.data().uid1;
+                const u2 = doc.data().uid2;
+                
+                if(((this.palid == u1 && this.uid == u2) || (this.uid == u1 && this.palid == u2)) && this.chatCreated == false){
+                  this.chatCreated = true;
+                  this.chatId = chat;
+                  return this.grabChat();
+                }//end if
+              })
+              .catch(err=>{
+                console.log("Can't get doc: ", err)
+              })
+              //TODO: GET UIDS FROM THIS, MIMIC OLD FUNCTION WITH PROMISES, THEN TEST
+            }
+          }
+          else{
+            if(this.chatCreated == false){//UNNECESSARY????)
+              this.chatCreated = true;
+              return this.createChat();
+            }
+          }
+        })
+        .catch(err =>{
+          console.log("Error: ",err);
+        })
+
+        /*
         this.afs.collection('humanProfile').doc(this.uid).valueChanges().subscribe( res => {
         this.buddyArray = res["chats"];
         var openChats = res["openChats"];
@@ -77,9 +133,9 @@ export class PalchatPage implements OnInit {
         if(openChats.includes(this.palid))
           this.hasChat = true;
         //If has no chats at all yet, start a new one
-        if(this.buddyArray.length == 0)
+        if(this.buddyArray.length == 0 && this.chatLoaded < 1)
           return this.createChat();
-        if(this.hasChat == false)
+        if(this.hasChat == false && this.chatLoaded < 1)
           return this.createChat();
         
 
@@ -99,7 +155,7 @@ export class PalchatPage implements OnInit {
                 this.hasChat = true;
                 oldChat = buddy;
                 this.chatId = oldChat;
-                //if(this.chatLoaded < 1)
+                if(this.chatLoaded < 1)
                   return this.grabChat();
               }
               else{
@@ -108,23 +164,27 @@ export class PalchatPage implements OnInit {
             });
           }
         }
-          /*
+
+
+         
+        })
+    }*/
+    }
+  }//end old chat
+ /*
           if(this.hasChat == false) { //has chat can only be set to false by the inner if statement above
             console.log("FALSE!");
             this.hasChat = true;
             if(this.chatLoaded < 1) //Don't try to create a chat if one has already been made
               return this.createChat();
           }*/
-        })
-      });//end promise
-    }
-  }//end old chat
 
-  createChat(){
+  async createChat(){
     this.chatLoaded = 1;
     this.hasChat = true;
     //IF NO CHAT EXISTS, create one between both members
-    this.cs.create(this.uid, this.palid).then(value => {
+    this.cs.create(this.uid, this.palid)
+    .then(value => {
       this.chatId = value.toString(); console.log("this.chatId: " + this.chatId);
       const source = this.cs.get(this.chatId); console.log(source);
       this.chat$ = source;
@@ -136,16 +196,23 @@ export class PalchatPage implements OnInit {
       this.afs.collection('humanProfile').doc(this.uid).update({
         openChats: firestore.FieldValue.arrayUnion(this.palid)
       });
+    })
+    .catch(err =>{
+      console.log("Unable to Create: ", err);
     });
   }
 
-  grabChat(){
+  async grabChat(){
     //IF FOUND A CHAT
     this.chatLoaded = 1;
     const source = this.cs.get(this.chatId); console.log(source);
     this.chat$ = source;
-    this.afs.collection('humanProfile').doc(this.uid).update({
+    return this.afs.collection('humanProfile').doc(this.uid).update({
       chats: firestore.FieldValue.arrayUnion(this.chatId)
+    }).then(value =>{
+      console.log("Successfull Grab! ", value);
+    }).catch(err =>{
+      console.log("Unable to Grab Chat: ", err);
     });
   }
 
