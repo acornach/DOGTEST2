@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Events } from 'ionic-angular';
+import { PalchatPage } from '../palchat/palchat';
+
 /**
  * Generated class for the PalProfilePage page.
  *
@@ -26,6 +28,18 @@ export class PalProfilePage {
       this.palid = pal;
     })
   
+  }
+
+  chatPal(pal){
+    this.navCtrl.push(PalchatPage)
+    .then(() => {
+      this.events.publish('data:created', this.uid, pal);
+     // this.events.publish('pal:created', pal);
+      console.log('Published', this.uid, pal);
+    })
+    .catch(err => {
+      console.log("Error: ", err);
+    })
   }
 
   ionViewDidLoad() {
