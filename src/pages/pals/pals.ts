@@ -4,6 +4,7 @@ import { Events } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { PalchatPage } from '../palchat/palchat';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { PalProfilePage } from '../pal-profile/pal-profile';
 /**
  * Generated class for the PalsPage page.
  *
@@ -68,7 +69,21 @@ export class PalsPage {
       this.events.publish('data:created', this.uid, pal);
      // this.events.publish('pal:created', pal);
       console.log('Published', this.uid, pal);
-    });
+    })
+    .catch(err => {
+      console.log("Error: ", err);
+    })
+  }
+
+  palProfile(pal){
+    this.navCtrl.push(PalProfilePage)
+    .then(() => {
+      this.events.publish('data:created', this.uid, pal);
+      console.log('published', this.uid, pal)
+    })
+    .catch(err => {
+      console.log("Error: ", err);
+    })
   }
 
 }

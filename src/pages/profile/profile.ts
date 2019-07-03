@@ -46,6 +46,7 @@ export class ProfilePage {
 	private snapDescription: string;
 	private likesDislikes: string;
 	private publicID: string;
+	private openChats: Array<string>;
 
 	private dogPhotoPath: string;	//Fetched from Firebase image
 	private humanPhotoPath: string;	//Fetched from Firebase image
@@ -68,7 +69,8 @@ export class ProfilePage {
 		//console.log( data);
 		this.uid = data;
 		this.chats = [""];//LOSE THIS ONCE RESET ALL USER DOCS
-
+		this.openChats = [""];//DITTO
+		
 		//once the user id is found, we can see if the user's document exists
 		//CHeck if document exists:
 		//NEED TO SWITCH TO THIS STATEMENT ONLY
@@ -94,7 +96,8 @@ export class ProfilePage {
 					this.likesDislikes = data["likesDislikes"],
 					this.likesDislikes$ = this.likesDislikes,
 					this.publicID = data["publicID"],
-					this.chats = data["chats"]
+					this.chats = data["chats"],
+					this.openChats = data["openChats"]
 				}); //Access by value
 			}
 			else{
@@ -182,7 +185,8 @@ export class ProfilePage {
 			likesDislikes: this.likesDislikes$,
 			UID: this.uid,
 			publicID: this.makeid(10),
-			chats: this.chats
+			chats: this.chats,
+			openChats: this.openChats
 
 		});
 

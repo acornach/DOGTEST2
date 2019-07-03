@@ -30,6 +30,7 @@ import { PalchatPage } from '../pages/palchat/palchat';
 import { AddpalchatroomPage } from '../pages/addpalchatroom/addpalchatroom';
 import { ChatServiceProvider } from '../providers/chat-service/chat-service';
 import { DogsPage } from '../pages/dogs/dogs';
+import { PalProfilePage } from '../pages/pal-profile/pal-profile'
 
 
 const firebaseAuth = {
@@ -61,7 +62,8 @@ const firebaseAuth = {
 		UpgradePage,
 		PalchatPage,
 		AddpalchatroomPage,
-		DogsPage
+		DogsPage,
+		PalProfilePage
   ],
   imports: [
     BrowserModule,
@@ -91,7 +93,8 @@ const firebaseAuth = {
 		UpgradePage,
 		PalchatPage,
 		AddpalchatroomPage,
-		DogsPage
+		DogsPage,
+		PalProfilePage
   ],
   providers: [
     StatusBar,
