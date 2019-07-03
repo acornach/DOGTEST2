@@ -5,6 +5,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { PalchatPage } from '../palchat/palchat';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { PalProfilePage } from '../pal-profile/pal-profile';
+
 /**
  * Generated class for the PalsPage page.
  *
@@ -64,7 +65,7 @@ export class PalsPage {
   }
 
   chatPal(pal){
-    this.navCtrl.push(PalchatPage)
+    this.navCtrl.push(PalProfilePage)
     .then(() => {
       this.events.publish('data:created', this.uid, pal);
      // this.events.publish('pal:created', pal);
