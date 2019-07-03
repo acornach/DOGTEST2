@@ -65,7 +65,7 @@ export class PalsPage {
   }
 
   chatPal(pal){
-    this.navCtrl.push(PalProfilePage)
+    this.navCtrl.push(PalchatPage)
     .then(() => {
       this.events.publish('data:created', this.uid, pal);
      // this.events.publish('pal:created', pal);
