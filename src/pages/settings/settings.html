@@ -14,20 +14,20 @@
 
 
 <ion-content padding>
-<div padding>
+	<div padding>
+			<button block ion-button (click)="searchRadius()">Search Radius</button>
+	</div>
+	<div padding>
 	<button block ion-button (click)="changePass()">Change Password</button>
 	</div>
 	<div padding>
-		<button block ion-button (click)="searchRadius()">Search Radius</button>
+		<button block ion-button (click)="HelpPage()">Help (user manual)</button>
 	</div>
 	<div padding>
-		<button block ion-button (click)="HelpPage()">Help Page</button>
+		<button block ion-button (click)="upgradePage()">Upgrade</button>
 	</div>
 	<div padding>
-		<button block ion-button (click)="logoutPage()">Logout Page</button>
-	</div>
-	<div padding>
-		<button block ion-button (click)="upgradePage()">Upgrade Page</button>
+		<button block ion-button (click)="logoutPage()">Logout</button>
 	</div>
 	<div>
 	{{ uid }}
