@@ -21,6 +21,7 @@ export class RegisterPage {
  
 	@ViewChild('username') user;
 	@ViewChild('password') password;
+	@ViewChild('passwordCheck') passwordCheck;
 	uid: string;
 	//Constructor for RegisterPage
 	//Includes various Angular Controllers and AngularFireAuth for registering to Firebase
@@ -49,24 +50,29 @@ export class RegisterPage {
 	
 	//Method fires when user attempts to register a new user
 	registerUser(){
-		this.fire.auth.createUserWithEmailAndPassword(this.user.value, this.password.value)
-		.then(data => {
-			//call this.alert to access our custom alert function
-			this.alert("Successfully Registerd User " + this.user.value);	//Pass in userName to alert
-			this.uid = this.fire.auth.currentUser.uid;
-			console.log('got data', data);
-			this.navCtrl.push( HomePage )
-			.then(() => {
-				this.events.publish('data:created', this.uid);
-				console.log('Published', this.uid);
-		});
-			
-		})
-		.catch(error => {
-			//call this.alert to access our custom alert function
-			this.alert(error.message);	//Pass Error messag into the alert
-			console.log('got an error: ', error);	
-		})
+		if(this.password.value == this.passwordCheck.value){
+			this.fire.auth.createUserWithEmailAndPassword(this.user.value, this.password.value)
+			.then(data => {
+				//call this.alert to access our custom alert function
+				this.alert("Successfully Registerd User " + this.user.value);	//Pass in userName to alert
+				this.uid = this.fire.auth.currentUser.uid;
+				console.log('got data', data);
+				this.navCtrl.push( HomePage )
+				.then(() => {
+					this.events.publish('data:created', this.uid);
+					console.log('Published', this.uid);
+			});
+				
+			})
+			.catch(error => {
+				//call this.alert to access our custom alert function
+				this.alert(error.message);	//Pass Error messag into the alert
+				console.log('got an error: ', error);	
+			})
+		}
+		else{
+			this.alert("Passwords Don't Match!")
+		}
 		console.log(this.user.value, this.password.value);  
 	}
 }
