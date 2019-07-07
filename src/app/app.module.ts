@@ -30,7 +30,8 @@ import { PalchatPage } from '../pages/palchat/palchat';
 import { AddpalchatroomPage } from '../pages/addpalchatroom/addpalchatroom';
 import { ChatServiceProvider } from '../providers/chat-service/chat-service';
 import { DogsPage } from '../pages/dogs/dogs';
-import { PalProfilePage } from '../pages/pal-profile/pal-profile'
+import { PalProfilePage } from '../pages/pal-profile/pal-profile';
+import { MyProfileViewPage } from '../pages/my-profile-view/my-profile-view'
 
 
 const firebaseAuth = {
@@ -63,7 +64,8 @@ const firebaseAuth = {
 		PalchatPage,
 		AddpalchatroomPage,
 		DogsPage,
-		PalProfilePage
+		PalProfilePage,
+		MyProfileViewPage
   ],
   imports: [
     BrowserModule,
@@ -94,7 +96,8 @@ const firebaseAuth = {
 		PalchatPage,
 		AddpalchatroomPage,
 		DogsPage,
-		PalProfilePage
+		PalProfilePage,
+		MyProfileViewPage
   ],
   providers: [
     StatusBar,

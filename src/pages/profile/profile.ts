@@ -5,6 +5,7 @@ import { Events } from 'ionic-angular';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs/Observable';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { MyProfileViewPage } from '../my-profile-view/my-profile-view';
 
 /**
  * Generated class for the ProfilePage page.
@@ -243,5 +244,16 @@ export class ProfilePage {
 			// The document probably doesn't exist.
 			console.error("Error updating document: ", error);
 		});
+	}
+
+	seeProfile(){
+		this.navCtrl.push(MyProfileViewPage)
+    .then(() => {
+      this.events.publish('data:created', this.uid);
+      console.log('Published', this.uid);
+		})
+		.catch( err =>
+			console.log("Unable to view profile!", err)
+		);
 	}
 }
