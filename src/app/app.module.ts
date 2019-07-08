@@ -32,7 +32,7 @@ import { ChatServiceProvider } from '../providers/chat-service/chat-service';
 import { DogsPage } from '../pages/dogs/dogs';
 import { PalProfilePage } from '../pages/pal-profile/pal-profile';
 import { MyProfileViewPage } from '../pages/my-profile-view/my-profile-view'
-
+import { FCM } from '@ionic-native/fcm';
 
 const firebaseAuth = {
 	apiKey: "AIzaSyB5CXbl5EfLlxcNHkh0rrVoalEuFq9jt9U",
@@ -104,7 +104,8 @@ const firebaseAuth = {
 		SplashScreen,
 		Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    ChatServiceProvider
+		ChatServiceProvider,
+		FCM
   ]
 })
 export class AppModule {}

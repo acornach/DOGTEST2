@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { MyProfileViewPage } from '../my-profile-view/my-profile-view';
 
+
 /**
  * Generated class for the ProfilePage page.
  *
