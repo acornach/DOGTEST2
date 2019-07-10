@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Geolocation } from '@ionic-native/geolocation';
 
+import { Firebase } from '@ionic-native/firebase/ngx';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
@@ -32,6 +33,7 @@ import { ChatServiceProvider } from '../providers/chat-service/chat-service';
 import { DogsPage } from '../pages/dogs/dogs';
 import { PalProfilePage } from '../pages/pal-profile/pal-profile';
 import { MyProfileViewPage } from '../pages/my-profile-view/my-profile-view'
+//import { FcmProvider } from '../providers/fcm/fcm';
 import { FCM } from '@ionic-native/fcm';
 
 const firebaseAuth = {
@@ -74,6 +76,7 @@ const firebaseAuth = {
 	AngularFireAuthModule,
 	AngularFireDatabaseModule,
 	AngularFirestoreModule
+	
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -105,6 +108,7 @@ const firebaseAuth = {
 		Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
 		ChatServiceProvider,
+		Firebase,
 		FCM
   ]
 })

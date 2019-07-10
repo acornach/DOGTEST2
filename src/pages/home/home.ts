@@ -15,6 +15,9 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs/Observable';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Geolocation } from '@ionic-native/geolocation';
+import { tap } from 'rxjs/operators';
+import { ToastController } from 'ionic-angular';
+//import { FcmProvider } from '../../providers/fcm/fcm';
 
 
 @Component({
@@ -29,7 +32,16 @@ export class HomePage {
 	lat: number;
 	long: number;
 	
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public events: Events, public   afDB: AngularFireDatabase, private afs: AngularFirestore,private geolocation: Geolocation) {
+  constructor(
+	  	public navCtrl: NavController, 
+		public alertCtrl: AlertController, 
+		public events: Events, 
+		public afDB: AngularFireDatabase, 
+		private afs: AngularFirestore,
+		private geolocation: Geolocation, 
+		public toastCtrl: ToastController
+		//public fcm: FcmProvider
+		) {
 	
 	this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
 		console.log( data);
@@ -134,7 +146,22 @@ export class HomePage {
 					console.log('DOGS!!!', this.uid);
 		});
 	}
+	
+	ionViewDidLoad(){
+		/*
+		//Get FCM tolken
+		this.fcm.getToken();
 
+		this.fcm.listenToNotifications().pipe(
+			tap(msg => {
+				const toast = this.toastCtrl.create({
+					message: msg.body, //Message body (text I think)
+					duration: 3000, 	//show for 3 seconds
+				});
+				toast.present();
+			})
+		).subscribe();*/
+	}
 
 
 }
