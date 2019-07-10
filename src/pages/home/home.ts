@@ -17,7 +17,7 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 import { Geolocation } from '@ionic-native/geolocation';
 import { tap } from 'rxjs/operators';
 import { ToastController } from 'ionic-angular';
-//import { FcmProvider } from '../../providers/fcm/fcm';
+import { FCM } from '@ionic-native/fcm';
 
 
 @Component({
@@ -39,7 +39,8 @@ export class HomePage {
 		public afDB: AngularFireDatabase, 
 		private afs: AngularFirestore,
 		private geolocation: Geolocation, 
-		public toastCtrl: ToastController
+		public toastCtrl: ToastController,
+		public fcm: FCM
 		//public fcm: FcmProvider
 		) {
 	
@@ -148,19 +149,34 @@ export class HomePage {
 	}
 	
 	ionViewDidLoad(){
-		/*
-		//Get FCM tolken
-		this.fcm.getToken();
+      //receiving FCMid
+      this.fcm.getToken().then(token =>{
+        localStorage.setItem("token", token);
+        alert("TOKEN: " + localStorage.getItem("token"));
 
-		this.fcm.listenToNotifications().pipe(
-			tap(msg => {
-				const toast = this.toastCtrl.create({
-					message: msg.body, //Message body (text I think)
-					duration: 3000, 	//show for 3 seconds
-				});
-				toast.present();
-			})
-		).subscribe();*/
+      })
+      .catch(err =>{
+        console.log("ERROR getting tolken in app component ", err);
+        alert("ERROR getting tolken in app component " + err);
+        //alert("ERROR getting tolken in app component " + stringify(err));
+      })
+
+      //receiving Notifications
+      this.fcm.onNotification().subscribe(data => {
+        if(data.wasTapped){
+          alert("TAPPED!");
+        }
+        else{
+          alert("MESSAGE!!!: " + data.message);
+        }
+      })
+
+      //updating Token if it is updated
+      this.fcm.onTokenRefresh().subscribe(token => {
+        localStorage.setItem("token", token);
+      })
+
+
 	}
 
 

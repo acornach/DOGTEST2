@@ -29,6 +29,7 @@ export class FcmProvider {
       await this.firebaseNative.grantPermission();
     }
 
+    //Web app or other?
     else{
       token = await this.firebaseNative.getToken();
     }
@@ -59,6 +60,7 @@ export class FcmProvider {
   //Returns an observable on the front end (for native apps only, need different method for web apps which might be applicable to this???)
   listenToNotifications(){
     return this.firebaseNative.onNotificationOpen()
+    //this.firebaseNative.
   }
 }
 

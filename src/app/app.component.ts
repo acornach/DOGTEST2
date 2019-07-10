@@ -10,7 +10,8 @@ import * as firebase from 'firebase'
 import { StartupPage } from '../pages/startup/startup';
 
 //Firebase Cloud Messaging
-import { FCM } from '@ionic-native/fcm';
+//import { FCM } from '@ionic-native/fcm';
+//import { stringify } from '@angular/core/src/render3/util';
 
 // Initialize Firebase
 var config = {
@@ -29,23 +30,14 @@ var config = {
 export class MyApp {
   rootPage:any = StartupPage;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, geolocation: Geolocation, public fcm: FCM) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, geolocation: Geolocation){//}, public fcm: FCM) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
-
+     
       
-      //Move to homepage???
-      this.fcm.getToken().then(token =>{
-        localStorage.setItem("token", token);
-
-      })
-      .catch(err =>{
-        console.log("ERROR getting tolken in app component ", err);
-      })
-
     });
 	firebase.initializeApp(config);
   }
