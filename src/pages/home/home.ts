@@ -149,35 +149,42 @@ export class HomePage {
 	}
 	
 	ionViewDidLoad(){
-      //receiving FCMid
-      this.fcm.getToken().then(token =>{
-        localStorage.setItem("token", token);
-        alert("TOKEN: " + localStorage.getItem("token"));
+	 
+		this.getToken();//receiving FCMid
+	  
+		this.subscribeNotifications();//subScribe to notifications
 
-      })
-      .catch(err =>{
-        console.log("ERROR getting tolken in app component ", err);
-        alert("ERROR getting tolken in app component " + err);
-        //alert("ERROR getting tolken in app component " + stringify(err));
-      })
-
-      //receiving Notifications
-      this.fcm.onNotification().subscribe(data => {
-        if(data.wasTapped){
-          alert("TAPPED!");
-        }
-        else{
-          alert("MESSAGE!!!: " + data.message);
-        }
-      })
-
-      //updating Token if it is updated
-      this.fcm.onTokenRefresh().subscribe(token => {
-        localStorage.setItem("token", token);
-      })
-
-
+		this.updateToken();	//subscribe to token updates
+     
 	}
 
+	getToken(){
+		 this.fcm.getToken().then(token =>{
+			localStorage.setItem("token", token);
+			alert("TOKEN: " + localStorage.getItem("token"));
+	
+		  })
+		  .catch(err =>{
+			console.log("ERROR getting tolken in app component ", err);
+			alert("ERROR getting tolken in app component " + err);
+			//alert("ERROR getting tolken in app component " + stringify(err));
+		  })
+	}
 
+	subscribeNotifications(){
+		this.fcm.onNotification().subscribe(data => {
+			if(data.wasTapped){
+			  alert("TAPPED!");//DO SOMETHING IF NOTIFICATION IS TAPPED!!!
+			}
+			else{
+			  alert("MESSAGE!!!: " + data.message);
+			}
+		  })
+	}
+
+	updateToken(){
+		 this.fcm.onTokenRefresh().subscribe(token => {
+			localStorage.setItem("token", token);
+		  })
+	}
 }
