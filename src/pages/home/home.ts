@@ -44,20 +44,75 @@ export class HomePage {
 		//public fcm: FcmProvider
 		) {
 	
-	this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
-		console.log( data);
-		this.uid = data;
+//	this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
+//		console.log( data);
+//		this.uid = data;
+
+		
+	//});//end events
+}
+
+  searching(){
+  	this.navCtrl.push(SearchingPage)
+	//	.then(() => {
+	//				this.events.publish('data:created', this.uid);
+	//				console.log('Published', this.uid);
+	//	});
+  }
+  
+  yourPals(){
+  	this.navCtrl.push(PalsPage)
+	//	.then(() => {
+	//				this.events.publish('data:created', this.uid);
+	//				console.log('Published', this.uid);
+	//	});
+  }
+  
+  settings(){
+  	this.navCtrl.push(SettingsPage)
+	//	.then(() => {
+	//				this.events.publish('data:created', this.uid);
+	//				console.log('Published', this.uid);
+	//	});
+  }
+  
+  yourProfile(){
+  	this.navCtrl.push(ProfilePage)
+	//	.then(() => {
+	//				this.events.publish('data:created', this.uid);
+	//				console.log('Published', this.uid);
+	//	});
+  }
+  
+  addDog(){
+  	this.navCtrl.push(AdddogPage)
+	//	.then(() => {
+	//				this.events.publish('data:created', this.uid);
+	//				console.log('Published', this.uid);
+	//	});
+  }
+
+	dogs(){
+		this.navCtrl.push(DogsPage)
+	//	.then(() => {
+	//				this.events.publish('data:created', this.uid);
+	//				console.log('DOGS!!!', this.uid);
+	//	});
+	}
+	
+	ionViewDidLoad(){
+		this.uid = localStorage.getItem("uid");//Stores user ID to Local Storage for other pages
 		
 		this.geolocation.getCurrentPosition().then((resp) => {
 			this.lat = resp.coords.latitude;
 			this.long = resp.coords.longitude;
-      console.log("Lat:  " + this.lat);
-      console.log("Long: " + this.long);
-     }).catch((error) => {
-       console.log('Error getting location', error);
-     });
+			console.log("Lat:  " + this.lat);
+			console.log("Long: " + this.long);
+			}).catch((error) => {
+			console.log('Error getting location', error);
+			});
 
-		afs.doc<Item>('humanProfile/'+this.uid).valueChanges().subscribe( res => {
+		this.afs.doc<Item>('humanProfile/'+this.uid).valueChanges().subscribe( res => {
 			
 			if(res){
 			
@@ -97,64 +152,14 @@ export class HomePage {
 	
 
 		});//end afs.doc
-	});//end events
-}
 
-  searching(){
-  	this.navCtrl.push(SearchingPage)
-		.then(() => {
-					this.events.publish('data:created', this.uid);
-					console.log('Published', this.uid);
-		});
-  }
-  
-  yourPals(){
-  	this.navCtrl.push(PalsPage)
-		.then(() => {
-					this.events.publish('data:created', this.uid);
-					console.log('Published', this.uid);
-		});
-  }
-  
-  settings(){
-  	this.navCtrl.push(SettingsPage)
-		.then(() => {
-					this.events.publish('data:created', this.uid);
-					console.log('Published', this.uid);
-		});
-  }
-  
-  yourProfile(){
-  	this.navCtrl.push(ProfilePage)
-		.then(() => {
-					this.events.publish('data:created', this.uid);
-					console.log('Published', this.uid);
-		});
-  }
-  
-  addDog(){
-  	this.navCtrl.push(AdddogPage)
-		.then(() => {
-					this.events.publish('data:created', this.uid);
-					console.log('Published', this.uid);
-		});
-  }
 
-	dogs(){
-		this.navCtrl.push(DogsPage)
-		.then(() => {
-					this.events.publish('data:created', this.uid);
-					console.log('DOGS!!!', this.uid);
-		});
-	}
-	
-	ionViewDidLoad(){
-	 
-		this.getToken();//receiving FCMid
+		//TODO: After testing, put these back!!!
+		//this.getToken();//receiving FCMid
 	  
-		this.subscribeNotifications();//subScribe to notifications
+		//this.subscribeNotifications();//subScribe to notifications
 
-		this.updateToken();	//subscribe to token updates
+		//this.updateToken();	//subscribe to token updates
      
 	}
 

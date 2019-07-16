@@ -25,54 +25,55 @@ export class SettingsPage {
 	uid: string;
   constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events) {
 	
-	this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
-		console.log( data);
-		this.uid = data;
-	});
+	//this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
+	//	console.log( data);
+	//	this.uid = data;
+	//});
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SettingsPage');
+	console.log('ionViewDidLoad SettingsPage');
+	this.uid = localStorage.getItem("uid");
   }
 
     changePass(){
   	this.navCtrl.push(ChangepassPage)
-	.then(() => {
-				this.events.publish('data:created', this.uid);
-				console.log('Published', this.uid);
-	});
+	//.then(() => {
+	//			this.events.publish('data:created', this.uid);
+	//			console.log('Published', this.uid);
+	//});
   }
   
   searchRadius(){
   	this.navCtrl.push(SearchradiusPage)
-	.then(() => {
-				this.events.publish('data:created', this.uid);
-				console.log('Published', this.uid);
-	});
+	//.then(() => {
+	//			this.events.publish('data:created', this.uid);
+	//			console.log('Published', this.uid);
+	//});
   }
   
   HelpPage(){
   	this.navCtrl.push(HelpPage)
-	.then(() => {
-				this.events.publish('data:created', this.uid);
-				console.log('Published', this.uid);
-	});
+	//.then(() => {
+	//			this.events.publish('data:created', this.uid);
+	//			console.log('Published', this.uid);
+	//});
   }
   
   logoutPage(){
   	this.navCtrl.push(LogoutPage)
-	.then(() => {
-				this.events.publish('data:created', this.uid);
-				console.log('Published', this.uid);
-	});
+	//.then(() => {
+	//			this.events.publish('data:created', this.uid);
+	//			console.log('Published', this.uid);
+	//});
   }
   
   upgradePage(){
   	this.navCtrl.push(UpgradePage)
-	.then(() => {
-				this.events.publish('data:created', this.uid);
-				console.log('Published', this.uid);
-	});
+	//.then(() => {
+	//			this.events.publish('data:created', this.uid);
+	//			console.log('Published', this.uid);
+	//});
   }
 
 

@@ -20,6 +20,7 @@ export class AddpalchatroomPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddpalchatroomPage');
+    
   }
 
 }

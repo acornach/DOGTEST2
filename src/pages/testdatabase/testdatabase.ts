@@ -20,20 +20,19 @@ export class TestdatabasePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events) {
 	
-	this.events.subscribe('data:created', (data) => {
-		console.log( data);
-		this.uid = data;
-	});
+	//this.events.subscribe('data:created', (data) => {
+	//	console.log( data);
+	//	this.uid = data;
+	//});
   
   }
   
   
 
   ionViewDidLoad() {
+    this.uid = localStorage.getItem("uid");
     console.log('ionViewDidLoad TestdatabasePage');
-	
-
-console.log( this.uid);
+    console.log( this.uid);
   }
 
 }

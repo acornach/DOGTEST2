@@ -35,59 +35,60 @@ export class DogsPage {
   allDogs11: Array<string>;
   allDogs12: Array<string>;
   constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events, private geolocation: Geolocation,private afs: AngularFirestore ) {
-    this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
-      console.log( data);
-      this.uid = data;
-      //Initialize all arrays with one empty string so push works
-      this.allDogs = [""];
-      this.allDogs1 = [""];
-      this.allDogs2 = [""];
-      this.allDogs3 = [""];
-      this.allDogs4 = [""];
-      this.allDogs5 = [""];
-      this.allDogs6 = [""];
-      this.allDogs7 = [""];
-      this.allDogs8 = [""];
-      this.allDogs9 = [""];
-      this.allDogs10 = [""];
-      this.allDogs11 = [""];
-      this.allDogs12 = [""];
-      afs.collection('dogProfile').valueChanges().forEach(res => {
-        res.forEach(dog => {
-          if(dog['name'] != undefined)
-            this.allDogs.push(dog['name']);
-          if(dog['intense'] == true && dog['social'] == true && dog['playStyle'] == "contact")
-            this.allDogs1.push(dog['name']);
-            if(dog['intense'] == true && dog['social'] == true && dog['playStyle'] == "interact")
-              this.allDogs2.push(dog['name']);
-              if(dog['intense'] == true && dog['social'] == true && dog['playStyle'] == "none")
-                this.allDogs3.push(dog['name']);
-                if(dog['intense'] == true && dog['social'] == false && dog['playStyle'] == "contact")
-                  this.allDogs4.push(dog['name']);
-                  if(dog['intense'] == true && dog['social'] == false && dog['playStyle'] == "interact")
-                    this.allDogs5.push(dog['name']);
-                    if(dog['intense'] == true && dog['social'] == false && dog['playStyle'] == "none")
-                      this.allDogs6.push(dog['name']);
-                      if(dog['intense'] == false && dog['social'] == true && dog['playStyle'] == "contact")
-                        this.allDogs7.push(dog['name']);
-                        if(dog['intense'] == false && dog['social'] == true && dog['playStyle'] == "interact")
-                          this.allDogs8.push(dog['name']);
-                          if(dog['intense'] == false && dog['social'] == true && dog['playStyle'] == "none")
-                            this.allDogs9.push(dog['name']);
-                            if(dog['intense'] == false && dog['social'] == false && dog['playStyle'] == "contact")
-                              this.allDogs10.push(dog['name']);
-                              if(dog['intense'] == false && dog['social'] == false && dog['playStyle'] == "interact")
-                                this.allDogs11.push(dog['name']);
-                                if(dog['intense'] == false && dog['social'] == false && dog['playStyle'] == "none")
-                                  this.allDogs12.push(dog['name']);
-        })
-      });
+   // this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
+   //   console.log( data);
+     
   
-    });
+   // });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DogsPage');
+    this.uid = localStorage.getItem("uid");
+    //Initialize all arrays with one empty string so push works
+    this.allDogs = [""];
+    this.allDogs1 = [""];
+    this.allDogs2 = [""];
+    this.allDogs3 = [""];
+    this.allDogs4 = [""];
+    this.allDogs5 = [""];
+    this.allDogs6 = [""];
+    this.allDogs7 = [""];
+    this.allDogs8 = [""];
+    this.allDogs9 = [""];
+    this.allDogs10 = [""];
+    this.allDogs11 = [""];
+    this.allDogs12 = [""];
+    this.afs.collection('dogProfile').valueChanges().forEach(res => {
+      res.forEach(dog => {
+        if(dog['name'] != undefined)
+          this.allDogs.push(dog['name']);
+        if(dog['intense'] == true && dog['social'] == true && dog['playStyle'] == "contact")
+          this.allDogs1.push(dog['name']);
+          if(dog['intense'] == true && dog['social'] == true && dog['playStyle'] == "interact")
+            this.allDogs2.push(dog['name']);
+            if(dog['intense'] == true && dog['social'] == true && dog['playStyle'] == "none")
+              this.allDogs3.push(dog['name']);
+              if(dog['intense'] == true && dog['social'] == false && dog['playStyle'] == "contact")
+                this.allDogs4.push(dog['name']);
+                if(dog['intense'] == true && dog['social'] == false && dog['playStyle'] == "interact")
+                  this.allDogs5.push(dog['name']);
+                  if(dog['intense'] == true && dog['social'] == false && dog['playStyle'] == "none")
+                    this.allDogs6.push(dog['name']);
+                    if(dog['intense'] == false && dog['social'] == true && dog['playStyle'] == "contact")
+                      this.allDogs7.push(dog['name']);
+                      if(dog['intense'] == false && dog['social'] == true && dog['playStyle'] == "interact")
+                        this.allDogs8.push(dog['name']);
+                        if(dog['intense'] == false && dog['social'] == true && dog['playStyle'] == "none")
+                          this.allDogs9.push(dog['name']);
+                          if(dog['intense'] == false && dog['social'] == false && dog['playStyle'] == "contact")
+                            this.allDogs10.push(dog['name']);
+                            if(dog['intense'] == false && dog['social'] == false && dog['playStyle'] == "interact")
+                              this.allDogs11.push(dog['name']);
+                              if(dog['intense'] == false && dog['social'] == false && dog['playStyle'] == "none")
+                                this.allDogs12.push(dog['name']);
+      })
+    });
   }
 
 }

@@ -67,23 +67,48 @@ export class ProfilePage {
 	//Constructor, includes ctrls, etc..
   constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events, public   afDB: AngularFireDatabase, private afs: AngularFirestore, private platform: Platform) {
 
-	this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
+	//this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
 		//console.log( data);
-		this.uid = data;
+		
+	//});//End subscribe event
+
+	//This line binds items to the collection humanProfile
+	//this.items = afs.collection('humanProfile').valueChanges();
+	//console.log(this.items);
+
+  }
+
+	//this.item = this.itemDoc.valueChanges().pipe();
+	//console.log(this.itemDoc.get);
+	//console.log(this.item)
+	
+	//this.userDoc = fireStore.doc<any>('humanProfile/' + this.uid);	//Creates a document in database with their user ID
+	/*this.userDoc.set({
+    firstName: 'Allison',
+	lastName: 'Little',
+    email: '',
+	dogID: '',
+    // Other info you want to add here
+  })*/
+  //}
+
+  ionViewDidLoad() {
+		console.log('ionViewDidLoad ProfilePage');
+		this.uid = localStorage.getItem("uid");
 		this.chats = [""];//LOSE THIS ONCE RESET ALL USER DOCS
 		this.openChats = [""];//DITTO
 		
 		//once the user id is found, we can see if the user's document exists
 		//CHeck if document exists:
 		//NEED TO SWITCH TO THIS STATEMENT ONLY
-		afs.doc<Item>('humanProfile/'+this.uid).valueChanges().subscribe( res => {
+		this.afs.doc<Item>('humanProfile/'+this.uid).valueChanges().subscribe( res => {
 			if(res){
 				this.docExists = true;
 				//TODO: what to do if they have a profile. display and hide edit buttons
 
 				console.log("doc: humanProfile/" + this.uid + " found!");
 				//This line binds a Document tothe user
-				this.itemDoc = afs.doc<Item>('humanProfile/'+this.uid);
+				this.itemDoc = this.afs.doc<Item>('humanProfile/'+this.uid);
 				this.itemDoc.valueChanges().forEach( data => { 
 					this.firstName = data["firstName"],
 					this.fName$ = this.firstName,
@@ -109,30 +134,6 @@ export class ProfilePage {
 			}
 
 		});//End get doc
-	});//End subscribe event
-
-	//This line binds items to the collection humanProfile
-	//this.items = afs.collection('humanProfile').valueChanges();
-	//console.log(this.items);
-
-  }
-
-	//this.item = this.itemDoc.valueChanges().pipe();
-	//console.log(this.itemDoc.get);
-	//console.log(this.item)
-	
-	//this.userDoc = fireStore.doc<any>('humanProfile/' + this.uid);	//Creates a document in database with their user ID
-	/*this.userDoc.set({
-    firstName: 'Allison',
-	lastName: 'Little',
-    email: '',
-	dogID: '',
-    // Other info you want to add here
-  })*/
-  //}
-
-  ionViewDidLoad() {
-		console.log('ionViewDidLoad ProfilePage');
 }
 
 //Updating methods

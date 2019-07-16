@@ -30,10 +30,19 @@ export class PalsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events, private geolocation: Geolocation,private afs: AngularFirestore ) {
 	
-    this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
-      console.log( data);
-      this.uid = data;
-      afs.doc<Item>('humanProfile/'+this.uid).valueChanges().subscribe( res => {
+    //this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
+     // console.log( data);
+      
+    //});
+      
+    
+
+  }//end constructor
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad PalsPage');
+    this.uid = localStorage.getItem("uid");
+      this.afs.doc<Item>('humanProfile/'+this.uid).valueChanges().subscribe( res => {
         if(res){
           //TODO: pull array data from firebase
           this.myPals = res["friendList"];
@@ -41,7 +50,6 @@ export class PalsPage {
 
         }
       });
-    });
       
     this.geolocation.getCurrentPosition().then((resp) => {
         console.log("Lat:  " + resp.coords.latitude);
@@ -49,42 +57,40 @@ export class PalsPage {
     }).catch((error) => {
         console.log('Error getting location', error);
     });
-
-  }//end constructor
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad PalsPage');
   }
 
-  palchat(){
-    this.navCtrl.push(PalchatPage)
-    .then(() => {
-      this.events.publish('data:created', this.uid);
-      console.log('Published', this.uid);
-    });
-  }
+  //palchat(){
+    //localStorage.setItem("pal", pal);
+    //this.navCtrl.push(PalchatPage)
+    //.then(() => {
+    //  this.events.publish('data:created', this.uid);
+     // console.log('Published', this.uid);
+    //});
+  //}
 
   chatPal(pal){
+    localStorage.setItem("pal", pal);
     this.navCtrl.push(PalchatPage)
-    .then(() => {
-      this.events.publish('data:created', this.uid, pal);
+    //.then(() => {
+     // this.events.publish('data:created', this.uid, pal);
      // this.events.publish('pal:created', pal);
-      console.log('Published', this.uid, pal);
-    })
-    .catch(err => {
-      console.log("Error: ", err);
-    })
+    //  console.log('Published', this.uid, pal);
+    //})
+    //.catch(err => {
+    //  console.log("Error: ", err);
+    //})
   }
 
   palProfile(pal){
+    localStorage.setItem("pal", pal);
     this.navCtrl.push(PalProfilePage)
-    .then(() => {
-      this.events.publish('data:created', this.uid, pal);
-      console.log('published', this.uid, pal)
-    })
-    .catch(err => {
-      console.log("Error: ", err);
-    })
+    //.then(() => {
+    //  this.events.publish('data:created', this.uid, pal);
+    //  console.log('published', this.uid, pal)
+    //})
+    //////.catch(err => {
+    //  console.log("Error: ", err);
+   // })
   }
 
 }

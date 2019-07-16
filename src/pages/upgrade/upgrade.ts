@@ -17,13 +17,14 @@ export class UpgradePage {
   uid: string;
   constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events) {
 	
-	this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
-		console.log( data);
-		this.uid = data;
-	});
+	//this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
+	//	console.log( data);
+	//	this.uid = data;
+	//});
   }
 
   ionViewDidLoad() {
+    this.uid = localStorage.getItem("uid");
     console.log('ionViewDidLoad UpgradePage');
   }
 

@@ -21,29 +21,30 @@ export class PalProfilePage {
   palid: string;
 
   constructor(public events: Events, public navCtrl: NavController, public navParams: NavParams) {
-    this.events.subscribe('data:created', (data, pal) => {	//TODO: GET UID from AUTH
-      console.log("Data Created!!"); console.log( data, pal);
+   // this.events.subscribe('data:created', (data, pal) => {	//TODO: GET UID from AUTH
+      //console.log("Data Created!!"); console.log( data, pal);
       //Gets both the user ID and the Pal to message ID from chats.ts
-      this.uid = data;
-      this.palid = pal;
-    })
+      
+    //})
   
   }
 
   chatPal(pal){
     this.navCtrl.push(PalchatPage)
-    .then(() => {
-      this.events.publish('data:created', this.uid, pal);
+    //.then(() => {
+     // this.events.publish('data:created', this.uid, pal);
      // this.events.publish('pal:created', pal);
-      console.log('Published', this.uid, pal);
-    })
-    .catch(err => {
-      console.log("Error: ", err);
-    })
+    //  console.log('Published', this.uid, pal);
+    //})
+    //.catch(err => {
+    //  console.log("Error: ", err);
+    //})
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PalProfilePage');
+    this.uid = localStorage.getItem("uid");
+    this.palid = localStorage.getItem("pal");
   }
 
 }

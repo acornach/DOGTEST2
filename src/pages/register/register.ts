@@ -56,12 +56,9 @@ export class RegisterPage {
 				//call this.alert to access our custom alert function
 				this.alert("Successfully Registerd User " + this.user.value);	//Pass in userName to alert
 				this.uid = this.fire.auth.currentUser.uid;
-				console.log('got data', data);
+//				console.log('got data', data);
+				localStorage.setItem("uid", this.uid);//Stores user ID to Local Storage for other pages
 				this.navCtrl.push( HomePage )
-				.then(() => {
-					this.events.publish('data:created', this.uid);
-					console.log('Published', this.uid);
-			});
 				
 			})
 			.catch(error => {

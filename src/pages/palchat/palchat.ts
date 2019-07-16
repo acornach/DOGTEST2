@@ -49,15 +49,8 @@ export class PalchatPage implements OnInit {
   	//Constructor, includes ctrls, etc..
     constructor(private auth: AngularFireAuth,public navCtrl: NavController, public navParams: NavParams, public events: Events, public   afDB: AngularFireDatabase, private afs: AngularFirestore, private platform: Platform, public cs: ChatServiceProvider) {
       
-      this.events.subscribe('data:created', (data, pal) => {	//TODO: GET UID from AUTH
-        console.log("Data Created!!"); console.log( data, pal);
-        //Gets both the user ID and the Pal to message ID from chats.ts
-        this.uid = data;
-        this.palid = pal;
-        this.chatLoaded = 0;//Set that no chat has been loaded
-        var oldChat: string;//will store ID of old chat if one is found?
+      //this.events.subscribe('data:created', (data, pal) => {	//TODO: GET UID from AUTH
         
-        this.checkForChat(oldChat);//once data is created, call the check for old chat function
         //have check For Chat return the promise object
         //Must use send on all paths
 
@@ -65,7 +58,7 @@ export class PalchatPage implements OnInit {
 
         //The promise will pass back a JSON document which you can use to get the info
   
-      });//end SUBSCRIBE
+      //});//end SUBSCRIBE
     }//end constructor
 
   async updatePage(){
@@ -241,6 +234,15 @@ export class PalchatPage implements OnInit {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PalchatPage');
+   
+        //Gets both the user ID and the Pal to message ID from chats.ts
+        this.uid = localStorage.getItem("uid");
+        this.palid = localStorage.getItem("pal");
+        console.log("Data Created!!"); console.log( this.uid, this.palid);
+        this.chatLoaded = 0;//Set that no chat has been loaded
+        var oldChat: string;//will store ID of old chat if one is found?
+        
+        this.checkForChat(oldChat);//once data is created, call the check for old chat function
   
   }
 

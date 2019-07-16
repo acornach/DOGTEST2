@@ -44,13 +44,15 @@ export class LoginPage {
     signInUser(){//Should validate email address before sending to firebase
     	this.fire.auth.signInWithEmailAndPassword(this.user.value, this.password.value)
 		.then( data => {//Firebase will log in successfully
-			//this.alert('Successful login');//alert the user
-			this.uid = this.fire.auth.currentUser.uid;//Stores user ID
+			this.uid = this.fire.auth.currentUser.uid;
+			localStorage.setItem("uid", this.uid);//Stores user ID to Local Storage for other pages
 			this.navCtrl.push( HomePage )
-			.then(() => {
-				this.events.publish('data:created', this.uid);
-				console.log('Published', this.uid);
-		});
+
+			//Old way of moving uid through pages
+			//.then(() => {
+			//	this.events.publish('data:created', this.uid);
+			//	console.log('Published', this.uid);
+			//});
 		
 		//this.sendData(this.uid);
 		//this.alert(this.uid);
@@ -60,13 +62,13 @@ export class LoginPage {
 		
 		//Go to other page on successful login
 		//this.navCtrl.push( TestdatabasePage );
-	})
-	.catch(error => {
-	//Unsuccessful login
-		this.alert(error.message);//display error message to user
-		console.log('error: ', error);
-	})
-	console.log('Would like to sign in with ', this.user.value, this.password.value); 
+		})
+		.catch(error => {
+		//Unsuccessful login
+			this.alert(error.message);//display error message to user
+			console.log('error: ', error);
+		})
+		console.log('Would like to sign in with ', this.user.value, this.password.value); 
   }
 
 }

@@ -35,9 +35,23 @@ export class SearchingPage {
   constructor(public navCtrl: NavController, public alertCtrl: AlertController, public events: Events, public   afDB: AngularFireDatabase, private afs: AngularFirestore,private geolocation: Geolocation) {
     //const milesPerLatLong = 69;
     
-	this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
-		console.log( data);
-    this.uid = data;
+	//this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
+  //	console.log( data);
+   
+
+    
+     
+ // });
+  
+
+
+  
+  }
+  
+ 
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad SearchingPage');
+    this.uid = localStorage.getItem("uid");
     this.possiblePals = [];
     this.possiblePalID = [];
     
@@ -51,7 +65,7 @@ export class SearchingPage {
      });
 
      //If have lat/long look for friends
-     afs.collection<any>('humanProfile').valueChanges().forEach(data => {
+     this.afs.collection<any>('humanProfile').valueChanges().forEach(data => {
        data.forEach(person => {
          //Searches every person in the database.
         if(person['UID'] != this.uid){
@@ -97,19 +111,6 @@ export class SearchingPage {
        //TODO: ONLY ADD A PAL BY CLICKING ON THEM:
 
      });//End get doc
-
-    
-     
-  });
-  
-
-
-  
-  }
-  
- 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SearchingPage');
   }
 
 

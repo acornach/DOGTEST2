@@ -28,14 +28,15 @@ export class AdddogPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events, public   afDB: AngularFireDatabase, private afs: AngularFirestore, private platform: Platform) {
 	
-	this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
-		console.log( data);
-		this.uid = data;
-	});
+	//this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
+	//	console.log( data);
+	//	this.uid = data;
+	//});
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AdddogPage');
+    this.uid = localStorage.getItem("uid");
   }
 
   addDogName(){
