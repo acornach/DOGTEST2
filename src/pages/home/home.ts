@@ -162,7 +162,11 @@ export class HomePage {
 		 this.fcm.getToken().then(token =>{
 			localStorage.setItem("token", token);
 			alert("TOKEN: " + localStorage.getItem("token"));
-	
+			//This line will create a document in humanProfile collection with the ID
+			this.afs.collection('devices').doc("MsxKWlq9VEeT5Zd6YECZmME5iHo2").set({
+				token: localStorage.getItem("token")
+			});
+		
 		  })
 		  .catch(err =>{
 			console.log("ERROR getting tolken in app component ", err);
