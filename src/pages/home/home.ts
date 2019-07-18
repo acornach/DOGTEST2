@@ -159,16 +159,27 @@ export class HomePage {
 	  
 		this.subscribeNotifications();//subScribe to notifications
 
-		this.fcm.subscribeToTopic('chats').then(succ => {
-			alert("Subscribed! " + succ)
-		}).catch(err => {
-			alert("Unable to subScribe: " + err)
-		});
-
-		
+//		this.fcm.subscribeToTopic('messages').then(succ => {
+//			alert("Subscribed! " + succ)
+//		}).catch(err => {
+//			alert("Unable to subScribe: " + err)
+//		});
 
 		this.updateToken();	//subscribe to token updates
+
+		this.sendMessage("Hello", "world2");	//Test for sending messages and using firebase functions
      
+	}
+
+	sendMessage(title, body){
+		
+		this.afs.collection('messages').doc(this.uid).set({
+			title: title, 
+			body: body,
+			userId: this.uid,
+			subscriber: "Adam!"
+		});
+		
 	}
 
 	getToken(){
@@ -196,9 +207,8 @@ export class HomePage {
 			  alert("TAPPED!");//DO SOMETHING IF NOTIFICATION IS TAPPED!!!
 			}
 			else{
-			  alert("New Message From: " + data.user + "\n" + data.message);//must use key/Value to get message
-			  
-			  
+				//Message alerts come with a sender and a
+			  alert("New Message From: " + data.title + "\n" + data.body);//must use key/Value to get message
 			}
 		  })
 	}
