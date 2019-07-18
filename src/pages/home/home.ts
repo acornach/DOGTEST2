@@ -155,11 +155,19 @@ export class HomePage {
 
 
 		//TODO: After testing, put these back!!!
-		//this.getToken();//receiving FCMid
+		this.getToken();//receiving FCMid
 	  
-		//this.subscribeNotifications();//subScribe to notifications
+		this.subscribeNotifications();//subScribe to notifications
 
-		//this.updateToken();	//subscribe to token updates
+		this.fcm.subscribeToTopic('chats').then(succ => {
+			alert("Subscribed! " + succ)
+		}).catch(err => {
+			alert("Unable to subScribe: " + err)
+		});
+
+		
+
+		this.updateToken();	//subscribe to token updates
      
 	}
 
@@ -168,8 +176,9 @@ export class HomePage {
 			localStorage.setItem("token", token);
 			alert("TOKEN: " + localStorage.getItem("token"));
 			//This line will create a document in humanProfile collection with the ID
-			this.afs.collection('devices').doc("MsxKWlq9VEeT5Zd6YECZmME5iHo2").set({
-				token: localStorage.getItem("token")
+			this.afs.collection('devices').doc(localStorage.getItem("token")).set({
+				token: localStorage.getItem("token"),
+				userId: this.uid
 			});
 		
 		  })
@@ -181,12 +190,15 @@ export class HomePage {
 	}
 
 	subscribeNotifications(){
+		alert("NOTIFICATION")
 		this.fcm.onNotification().subscribe(data => {
 			if(data.wasTapped){
 			  alert("TAPPED!");//DO SOMETHING IF NOTIFICATION IS TAPPED!!!
 			}
 			else{
-			  alert("MESSAGE!!!: " + data.message);
+			  alert("New Message From: " + data.user + "\n" + data.message);//must use key/Value to get message
+			  
+			  
 			}
 		  })
 	}
