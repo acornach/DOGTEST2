@@ -18,6 +18,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { tap } from 'rxjs/operators';
 import { ToastController } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
+import { Platform } from 'ionic-angular';
 
 
 @Component({
@@ -40,7 +41,8 @@ export class HomePage {
 		private afs: AngularFirestore,
 		private geolocation: Geolocation, 
 		public toastCtrl: ToastController,
-		public fcm: FCM
+		public fcm: FCM,
+		public platform: Platform
 		//public fcm: FcmProvider
 		) {
 	
@@ -155,6 +157,7 @@ export class HomePage {
 
 
 		//TODO: After testing, put these back!!!
+		if(this.platform.is('android')){
 		this.getToken();//receiving FCMid
 	  
 		this.subscribeNotifications();//subScribe to notifications
@@ -167,8 +170,8 @@ export class HomePage {
 
 		this.updateToken();	//subscribe to token updates
 
-		this.sendMessage("Hello", "world2");	//Test for sending messages and using firebase functions
-     
+		//this.sendMessage("Hello", "world2");	//Test for sending messages and using firebase functions
+		}
 	}
 
 	sendMessage(title, body){

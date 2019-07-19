@@ -54,15 +54,16 @@ export class ChatServiceProvider {
     return docRef.id.toString();
   }
 
-  async sendMessage(uid, chatId, content){
+  async sendMessage(sender, receiver, chatId, content){
     //const { uid } = await this.auth.getUser(); // USE THIS METHOD EVENTUALLY
     const data = {
-      uid,
+      sender,
+      receiver,
       content,
       createdAt: Date.now()
     };
 
-    if(uid){
+    if(sender){
       const ref = this.afs.collection('chats').doc(chatId);
       return ref.update({//Adds a new message to the document
         messages: firestore.FieldValue.arrayUnion(data)

@@ -217,10 +217,9 @@ export class PalchatPage implements OnInit {
    
   }//end on init
 
-  //URGENT NEXT: FIGURE OUT WHERE IS CHATID
   submit(chatId) {
     console.log("uid" + this.uid + "\nchatID " + this.chatId + "\n" + this.newMsg);
-    this.cs.sendMessage(this.uid, chatId, this.newMsg);
+    this.cs.sendMessage(this.uid, this.palid, chatId, this.newMsg);
     this.newMsg = '';//reset new message
   }
 
