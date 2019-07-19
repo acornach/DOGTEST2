@@ -6,7 +6,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs/Observable';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { MyProfileViewPage } from '../my-profile-view/my-profile-view';
-
+import { Geolocation } from '@ionic-native/geolocation';
 
 /**
  * Generated class for the ProfilePage page.
@@ -44,6 +44,8 @@ export class ProfilePage {
 	private lastName: string;	//Fetched from Firebase document
 	private dogName: string;	//Fetched from Firebase document
 	private lookingFor: string;
+	private currLat: number;
+	private currLong: number;
 	private chats: Array<string>; //Placeholder for chats
 	private snapDescription: string;
 	private likesDislikes: string;
@@ -65,7 +67,7 @@ export class ProfilePage {
 
 
 	//Constructor, includes ctrls, etc..
-  constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events, public   afDB: AngularFireDatabase, private afs: AngularFirestore, private platform: Platform) {
+  constructor(public navCtrl: NavController,private geolocation: Geolocation, public navParams: NavParams, public events: Events, public   afDB: AngularFireDatabase, private afs: AngularFirestore, private platform: Platform) {
 
 	//this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
 		//console.log( data);
@@ -95,8 +97,20 @@ export class ProfilePage {
   ionViewDidLoad() {
 		console.log('ionViewDidLoad ProfilePage');
 		this.uid = localStorage.getItem("uid");
-		this.chats = [""];//LOSE THIS ONCE RESET ALL USER DOCS
-		this.openChats = [""];//DITTO
+		this.chats = [];//LOSE THIS ONCE RESET ALL USER DOCS
+		this.openChats = [];//DITTO
+		this.currLat = 1;
+		this.currLong = 1;
+
+		//LOCATION:
+		this.geolocation.getCurrentPosition().then((resp) => {
+			this.currLat = resp.coords.latitude;
+			this.currLong = resp.coords.longitude;
+			console.log("Lat:  " + this.currLat);
+			console.log("Long: " + this.currLong);
+			}).catch((error) => {
+				console.log('Error getting location', error);
+			});
 		
 		//once the user id is found, we can see if the user's document exists
 		//CHeck if document exists:
@@ -125,12 +139,14 @@ export class ProfilePage {
 					this.publicID = data["publicID"],
 					this.chats = data["chats"],
 					this.openChats = data["openChats"]
+					//this.currLat = data["currLat"],
+					//this.currLong = data["currLong"]
 				}); //Access by value
 			}
 			else{
 				this.docExists = false;
 				console.log("doc: humanProfile/" + this.uid + " not found");
-				//SHOW buttons and force data fill
+				//TODO: HIDE SOME BUTTTONS, SHOW OTHER buttons and force user to create
 			}
 
 		});//End get doc
@@ -189,7 +205,9 @@ export class ProfilePage {
 			UID: this.uid,
 			publicID: this.makeid(10),
 			chats: this.chats,
-			openChats: this.openChats
+			openChats: this.openChats,
+			currLat: this.currLat,
+			currLong: this.currLong
 
 		});
 

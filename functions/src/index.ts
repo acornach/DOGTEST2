@@ -7,17 +7,19 @@ admin.initializeApp(functions.config().firebase)
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 //
- export const helloWorld = functions.https.onRequest((request, response) => {
+export const helloWorld = functions.https.onRequest((request, response) => {
     console.log("ADAM's Console message");
     response.send("Hello from Firebase!");
- });
+});
 
 
- //exporting a notification when a new document gets created or updated in the update
- exports.newSubscriberNotification = functions.firestore
+//exporting a notification when a new document gets created or updated in the update
+//This should be only on update of existing chat. 
+exports.newMessageNotification = functions.firestore
     .document('chats/{chatId}')
     //.onCreate( async event => {
-    .onWrite( async event => {
+    //.onWrite( async event => {
+    .onUpdate( async event => {
         const data = event.after.data();//gets data from document after the update and saves the userId and the subscriberId
         console.log("Data: " + data);
     
@@ -86,3 +88,61 @@ admin.initializeApp(functions.config().firebase)
         }
     });
 
+exports.newChatNotification = functions.firestore
+.document('chats/{chatId}')
+.onCreate( async event => {
+//.onWrite( async event => {
+//.onUpdate( async event => {
+    const data = event.data();//gets data from document 
+    console.log("Data: " + data);
+
+    //Only attempt to message if there is data returned from document
+    if(data){
+        //const userId = data.uid1;//Don't need
+        const sender = data.uid1;
+        //const message = data.body//Don't need
+        const receiver = data.uid2;
+        const chatId = event.id;
+
+        
+        //Log to firebase console for debugging
+        console.log("sender: " + sender);
+        console.log("receiver: " + receiver);
+        console.log("chat: " + chatId);
+
+        //Creates the notification payload. The notification has a sender and a message
+        const payload = {
+            notification: {
+                title: "NEW MESSAGE",  //Sending info to open a chat
+                body: sender + ":|:" + chatId //String with both the sender and receiver data
+            }
+        }
+
+        // Find all the devices you want to notify
+        const db = admin.firestore()
+        const devicesRef = db.collection('devices').where('userId', '==', receiver) //Find all the devices that this user has registered
+        const devices = await devicesRef.get();//Retrieve the devices data by calling get
+
+        //set up empty array for each token
+        var tokens = ""
+
+        //loop over each document witht the user id and fill the tokens array
+        devices.forEach(result =>{
+            const token = result.data().token;
+            tokens = token;
+
+            //Should only be 1 token right now!!
+            console.log("TOKEN: " + token);
+        })
+
+        //Log Payload for debugging:
+        console.log("Payload: " + payload.notification.title + " | " + payload.notification.body);
+
+        //Send the notification to device
+        return admin.messaging().sendToDevice(tokens, payload); //send our message to the device
+       
+    }//end if
+    else{
+        return "";//No data in document
+    }
+});

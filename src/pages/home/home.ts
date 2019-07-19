@@ -19,6 +19,7 @@ import { tap } from 'rxjs/operators';
 import { ToastController } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
 import { Platform } from 'ionic-angular';
+import { firestore } from 'firebase/app';
 
 
 @Component({
@@ -26,7 +27,6 @@ import { Platform } from 'ionic-angular';
   templateUrl: 'home.html'
 })
 export class HomePage {
-
 //  @ViewChild('username') uname;
 //  @ViewChild('password') password;
 	uid: string;	//User's ID to grab/write data from database
@@ -43,63 +43,31 @@ export class HomePage {
 		public toastCtrl: ToastController,
 		public fcm: FCM,
 		public platform: Platform
-		//public fcm: FcmProvider
-		) {
-	
-//	this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
-//		console.log( data);
-//		this.uid = data;
-
-		
-	//});//end events
-}
+		) 
+	{}
 
   searching(){
   	this.navCtrl.push(SearchingPage)
-	//	.then(() => {
-	//				this.events.publish('data:created', this.uid);
-	//				console.log('Published', this.uid);
-	//	});
   }
   
   yourPals(){
   	this.navCtrl.push(PalsPage)
-	//	.then(() => {
-	//				this.events.publish('data:created', this.uid);
-	//				console.log('Published', this.uid);
-	//	});
   }
   
   settings(){
   	this.navCtrl.push(SettingsPage)
-	//	.then(() => {
-	//				this.events.publish('data:created', this.uid);
-	//				console.log('Published', this.uid);
-	//	});
   }
   
   yourProfile(){
   	this.navCtrl.push(ProfilePage)
-	//	.then(() => {
-	//				this.events.publish('data:created', this.uid);
-	//				console.log('Published', this.uid);
-	//	});
   }
   
   addDog(){
   	this.navCtrl.push(AdddogPage)
-	//	.then(() => {
-	//				this.events.publish('data:created', this.uid);
-	//				console.log('Published', this.uid);
-	//	});
   }
 
 	dogs(){
 		this.navCtrl.push(DogsPage)
-	//	.then(() => {
-	//				this.events.publish('data:created', this.uid);
-	//				console.log('DOGS!!!', this.uid);
-	//	});
 	}
 	
 	ionViewDidLoad(){
@@ -115,9 +83,7 @@ export class HomePage {
 			});
 
 		this.afs.doc<Item>('humanProfile/'+this.uid).valueChanges().subscribe( res => {
-			
 			if(res){
-			
 				if(this.lat != undefined && this.long != undefined){
 					//TODO: If they have profile, update their Lat/Long
 					console.log("doc: humanProfile/" + this.uid + " found!");
@@ -147,42 +113,29 @@ export class HomePage {
 				//Access by value
 			}
 			else{
-
 				console.log("doc: humanProfile/" + this.uid + " not found");
 				//SHOW buttons and force data fill
 			}
-	
-
 		});//end afs.doc
 
-
-		//TODO: After testing, put these back!!!
+		//Don't get device tolkens if you are a PC
 		if(this.platform.is('android')){
-		this.getToken();//receiving FCMid
-	  
-		this.subscribeNotifications();//subScribe to notifications
+			this.getToken();//receiving FCMid
+		
+			this.subscribeNotifications();//subScribe to notifications
 
-//		this.fcm.subscribeToTopic('messages').then(succ => {
-//			alert("Subscribed! " + succ)
-//		}).catch(err => {
-//			alert("Unable to subScribe: " + err)
-//		});
-
-		this.updateToken();	//subscribe to token updates
-
-		//this.sendMessage("Hello", "world2");	//Test for sending messages and using firebase functions
+			this.updateToken();	//subscribe to token updates
 		}
 	}
 
+	//OLD: SET FOR DELETE
 	sendMessage(title, body){
-		
 		this.afs.collection('messages').doc(this.uid).set({
 			title: title, 
 			body: body,
 			userId: this.uid,
 			subscriber: "Adam!"
 		});
-		
 	}
 
 	getToken(){
@@ -194,24 +147,49 @@ export class HomePage {
 				token: localStorage.getItem("token"),
 				userId: this.uid
 			});
-		
 		  })
 		  .catch(err =>{
 			console.log("ERROR getting tolken in app component ", err);
 			alert("ERROR getting tolken in app component " + err);
-			//alert("ERROR getting tolken in app component " + stringify(err));
 		  })
 	}
 
 	subscribeNotifications(){
 		alert("NOTIFICATION")
 		this.fcm.onNotification().subscribe(data => {
-			if(data.wasTapped){
-			  alert("TAPPED!");//DO SOMETHING IF NOTIFICATION IS TAPPED!!!
+			if(data.title == "NEW MESSAGE"){
+				/**
+				 * When a user who you have not "palled" with wants
+				 * to message you, they start a chat. You get a notification
+				 * here, but for now all this does is add the chat to your
+				 * personal chats array and adds the user to your openChats array.
+				 * 
+				 * This way the other user does not write to your database file, your
+				 * app does. In the future this will probably need to be changed somehow
+				 * 
+				 * For now this allows chats to be created by other user and you will then
+				 * join in on the same chat with them.
+				 */
+
+				var messageBody: string;
+				messageBody = data.body;
+				var sender = messageBody.substring(0,messageBody.indexOf(':|:'));
+				var chat = messageBody.substring(messageBody.indexOf(':|:') + 3);
+				
+				const ref = this.afs.collection('humanProfile').doc(this.uid);
+      			ref.update({//Adds a new message to the document
+					chats: firestore.FieldValue.arrayUnion(chat),
+					openChats: firestore.FieldValue.arrayUnion(sender)
+      			});
 			}
 			else{
-				//Message alerts come with a sender and a
-			  alert("New Message From: " + data.title + "\n" + data.body);//must use key/Value to get message
+				if(data.wasTapped){
+					alert("TAPPED!");//DO SOMETHING IF NOTIFICATION IS TAPPED!!!
+				}
+				else{
+					//Message alerts come with a sender and a
+					alert("New Message From: " + data.title + "\n" + data.body);//must use key/Value to get message
+				}
 			}
 		  })
 	}

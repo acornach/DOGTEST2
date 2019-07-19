@@ -32,7 +32,7 @@ export class SearchingPage {
   possiblePalID: Array<string>;
 
   
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public events: Events, public   afDB: AngularFireDatabase, private afs: AngularFirestore,private geolocation: Geolocation) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public events: Events, public   afDB: AngularFireDatabase, private afs: AngularFirestore, private geolocation: Geolocation) {
     //const milesPerLatLong = 69;
     
 	//this.events.subscribe('data:created', (data) => {	//Gets uid passed into from login page
