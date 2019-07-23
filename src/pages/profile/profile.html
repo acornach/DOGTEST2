@@ -15,52 +15,55 @@
 
 <ion-content padding>
 
-	
+	<!--
+		Buttons will be disabled until the user has created a profile: var: docExists
+		https://stackoverflow.com/questions/42025281/how-disable-enable-button-with-ionic-2
+	-->
 	<ion-list>
 		<ion-item>
 			<ion-label floating >First Name</ion-label>
 			<ion-input type="text" [(ngModel)]="fName$"></ion-input>
 				
 		</ion-item>
-		<button block ion-button (click)="updateFirstName()">updateFirstName</button>
+		<button block ion-button [disabled]="!docExists" (click)="updateFirstName()">updateFirstName</button>
 
 		<ion-item>
 			<ion-label floating>Last Name</ion-label>
 			<ion-input type="text" [(ngModel)]="lName$"></ion-input>
 		</ion-item>
-		<button block ion-button (click)="updateLastName()">updateLastName</button>
+		<button block ion-button [disabled]="!docExists" (click)="updateLastName()">updateLastName</button>
 	
 		<ion-item>
 			<ion-label floating>Dog Name</ion-label>
 			<ion-input type="text" [(ngModel)]="dogName$"></ion-input>
 		</ion-item>
-		<button block ion-button (click)="updateDogName()">updateDogName</button>
+		<button block ion-button [disabled]="!docExists" (click)="updateDogName()">updateDogName</button>
 
 		<ion-item>
 			<ion-label floating>Looking For</ion-label>
 			<ion-input type="text" [(ngModel)]="lookingFor$"></ion-input>
 		</ion-item>
-		<button block ion-button (click)="updateLookingFor()">updateLookingFor</button>
+		<button block ion-button [disabled]="!docExists" (click)="updateLookingFor()">updateLookingFor</button>
 
 		<ion-item>
 			<ion-label floating>Snap Description</ion-label>
 			<ion-input type="text" [(ngModel)]="snapDescription$"></ion-input>
 		</ion-item>
-		<button block ion-button (click)="updateSnapDescription()">updateSnapDescription</button>
+		<button block ion-button [disabled]="!docExists" (click)="updateSnapDescription()">updateSnapDescription</button>
 		
 		<ion-item>
 			<ion-label floating>Likes / Dislikes</ion-label>
 			<ion-input type="text" [(ngModel)]="likesDislikes$"></ion-input>
 		</ion-item>
-		<button block ion-button (click)="updateLikesDislikes()">updateLikesDislikes</button>
+		<button block ion-button [disabled]="!docExists" (click)="updateLikesDislikes()">updateLikesDislikes</button>
 
 		<div padding>
-			<button block ion-button (click)="updateInfo()">Update All Info</button>
+			<button block ion-button (click)="updateInfo()">Create Profile/Update All Info</button>
 		</div>
 
 		
 		<div padding>
-			<button block ion-button (click)="seeProfile()">See Public Profile</button>
+			<button block ion-button [disabled]="!docExists" (click)="seeProfile()">See Public Profile</button>
 		</div>
 		</ion-list>
 

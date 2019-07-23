@@ -99,8 +99,8 @@ export class ProfilePage {
 		this.uid = localStorage.getItem("uid");
 		this.chats = [];//LOSE THIS ONCE RESET ALL USER DOCS
 		this.openChats = [];//DITTO
-		this.currLat = 1;
-		this.currLong = 1;
+		this.currLat = 45.5;
+		this.currLong = 122.7;
 
 		//LOCATION:
 		this.geolocation.getCurrentPosition().then((resp) => {
@@ -109,7 +109,7 @@ export class ProfilePage {
 			console.log("Lat:  " + this.currLat);
 			console.log("Long: " + this.currLong);
 			}).catch((error) => {
-				console.log('Error getting location', error);
+				console.log('Error getting location: ', error);
 			});
 		
 		//once the user id is found, we can see if the user's document exists
@@ -154,31 +154,39 @@ export class ProfilePage {
 
 //Updating methods
 	updateFirstName(){
-		this.afs.collection('humanProfile').doc(this.uid).update({
-			firstName: this.fName$
-		})
-		.then(function() {
-			console.log('New First name: ' + this.fName$)
-		})
-		.catch(function(error) {
-			// The document probably doesn't exist.
-			console.error("Error updating document: ", error);
-		});
-		
+		if(this.docExists){
+			this.afs.collection('humanProfile').doc(this.uid).update({
+				firstName: this.fName$
+			})
+			.then(function() {
+				console.log('New First name: ' + this.fName$)
+			})
+			.catch(function(error) {
+				// The document probably doesn't exist.
+				console.error("Error updating document: ", error);
+			});
+		}
+		else{//Need to create profile first
+			alert("Must Update All info at once to create profile!" );
+		}
 	}
 
 	updateLastName(){
-		this.afs.collection('humanProfile').doc(this.uid).update({
-			lastName: this.lName$
-		})
-		.then(function() {
-			console.log('New Last name: ' + this.lName$)
-		})
-		.catch(function(error) {
-			// The document probably doesn't exist.
-			console.error("Error updating document: ", error);
-		});
-		
+		if(this.docExists){
+			this.afs.collection('humanProfile').doc(this.uid).update({
+				lastName: this.lName$
+			})
+			.then(function() {
+				console.log('New Last name: ' + this.lName$)
+			})
+			.catch(function(error) {
+				// The document probably doesn't exist.
+				console.error("Error updating document: ", error);
+			});
+		}
+		else{//Need to create profile first
+			alert("Must Update All info at once to create profile!" );
+		}
 	}
 
 	 makeid(length) {
@@ -214,66 +222,86 @@ export class ProfilePage {
 	}
 
 	updateDogName(){
-		this.afs.collection('humanProfile').doc(this.uid).update({
-			dogName: this.dogName$
-		})
-		.then(function() {
-			console.log('New dog name: ' + this.dogName$)
-		})
-		.catch(function(error) {
-			// The document probably doesn't exist.
-			console.error("Error updating document: ", error);
-		});
-		
+		if(this.docExists){
+			this.afs.collection('humanProfile').doc(this.uid).update({
+				dogName: this.dogName$
+			})
+			.then(function() {
+				console.log('New dog name: ' + this.dogName$)
+			})
+			.catch(function(error) {
+				// The document probably doesn't exist.
+				console.error("Error updating document: ", error);
+			});
+		}
+		else{//Need to create profile first
+			alert("Must Update All info at once to create profile!" );
+		}
 	}
 
 	updateLookingFor(){
-		this.afs.collection('humanProfile').doc(this.uid).update({
-			lookingFor: this.lookingFor$
-		})
-		.then(function() {
-			console.log('New looking for: ' + this.lookingFor$)
-		})
-		.catch(function(error) {
-			// The document probably doesn't exist.
-			console.error("Error updating document: ", error);
-		});
+		if(this.docExists){
+			this.afs.collection('humanProfile').doc(this.uid).update({
+				lookingFor: this.lookingFor$
+			})
+			.then(function() {
+				console.log('New looking for: ' + this.lookingFor$)
+			})
+			.catch(function(error) {
+				// The document probably doesn't exist.
+				console.error("Error updating document: ", error);
+			});
+		}
+		else{//Need to create profile first
+			alert("Must Update All info at once to create profile!" );
+		}
 	}
 
 	updateSnapDescription(){
-		this.afs.collection('humanProfile').doc(this.uid).update({
-			snapDescription: this.snapDescription$
-		})
-		.then(function() {
-			console.log('New description: ' + this.snapDescription$)
-		})
-		.catch(function(error) {
-			// The document probably doesn't exist.
-			console.error("Error updating document: ", error);
-		});
+		if(this.docExists){
+			this.afs.collection('humanProfile').doc(this.uid).update({
+				snapDescription: this.snapDescription$
+			})
+			.then(function() {
+				console.log('New description: ' + this.snapDescription$)
+			})
+			.catch(function(error) {
+				// The document probably doesn't exist.
+				console.error("Error updating document: ", error);
+			});
+		}
+		else{//Need to create profile first
+			alert("Must Update All info at once to create profile!" );
+		}
 	}
 
 	updateLikesDislikes(){
-		this.afs.collection('humanProfile').doc(this.uid).update({
-			likesDislikes: this.likesDislikes$
-		})
-		.then(function() {
-			console.log('New likes/dislikes: ' + this.likesDislikes$)
-		})
-		.catch(function(error) {
-			// The document probably doesn't exist.
-			console.error("Error updating document: ", error);
-		});
+		if(this.docExists){
+			this.afs.collection('humanProfile').doc(this.uid).update({
+				likesDislikes: this.likesDislikes$
+			})
+			.then(function() {
+				console.log('New likes/dislikes: ' + this.likesDislikes$)
+			})
+			.catch(function(error) {
+				// The document probably doesn't exist.
+				console.error("Error updating document: ", error);
+			});
+		}
+		else{//Need to create profile first
+			alert("Must Update All info at once to create profile!" );
+		}
 	}
 
 	seeProfile(){
 		this.navCtrl.push(MyProfileViewPage)
-    .then(() => {
-      this.events.publish('data:created', this.uid);
-      console.log('Published', this.uid);
+		.then(() => {
+			this.events.publish('data:created', this.uid);
+			console.log('Published', this.uid);
 		})
 		.catch( err =>
-			console.log("Unable to view profile!", err)
+				console.log("Unable to view profile!", err)
 		);
 	}
+
 }
