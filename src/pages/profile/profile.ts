@@ -152,7 +152,28 @@ export class ProfilePage {
 		});//End get doc
 }
 
-//Updating methods
+	//MUST BE CALLED TO INITIALLY CREATE USER PROFILE. ALSO CAN UPDATE ONCE PROFILE IS MADE
+	updateInfo(){
+			
+		//This line will create a document in humanProfile collection with the ID
+		this.afs.collection('humanProfile').doc(this.uid).set({
+			firstName:  (this.fName$) ? this.fName$ : "UNKNOWN",
+			lastName: (this.lName$) ? this.lName$ : "UNKNOWN",
+			dogName: this.dogName$ ? this.dogName$ : "UNKNOWN",
+			lookingFor: this.lookingFor$ ? this.lookingFor$ : "UNKNOWN",
+			snapDescription: this.snapDescription$ ? this.snapDescription$ : "UNKNOWN",
+			likesDislikes: this.likesDislikes$ ? this.likesDislikes$ : "UNKNOWN",
+			UID: this.uid,
+			publicID: this.makeid(10),
+			chats: this.chats,
+			openChats: this.openChats,
+			currLat: this.currLat,
+			currLong: this.currLong
+
+		});
+
+	}
+	//Updating methods
 	updateFirstName(){
 		if(this.docExists){
 			this.afs.collection('humanProfile').doc(this.uid).update({
@@ -189,7 +210,7 @@ export class ProfilePage {
 		}
 	}
 
-	 makeid(length) {
+	makeid(length) {
 		var result           = '';
 		var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 		var charactersLength = characters.length;
@@ -197,29 +218,7 @@ export class ProfilePage {
 			 result += characters.charAt(Math.floor(Math.random() * charactersLength));
 		}
 		return result;
- }
- 
-
-	updateInfo(){
-		
-		//This line will create a document in humanProfile collection with the ID
-		this.afs.collection('humanProfile').doc(this.uid).set({
-			firstName: this.fName$,
-			lastName: this.lName$,
-			dogName: this.dogName$,
-			lookingFor: this.lookingFor$,
-			snapDescription: this.snapDescription$,
-			likesDislikes: this.likesDislikes$,
-			UID: this.uid,
-			publicID: this.makeid(10),
-			chats: this.chats,
-			openChats: this.openChats,
-			currLat: this.currLat,
-			currLong: this.currLong
-
-		});
-
-	}
+ 	}
 
 	updateDogName(){
 		if(this.docExists){
