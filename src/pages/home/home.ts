@@ -72,7 +72,7 @@ export class HomePage {
 	}
 	
 	ionViewWillEnter(){
-		this.hasProfile = (localStorage.getItem("hasProfile") == "true") ? true : false; 
+		this.hasProfile = true; //(localStorage.getItem("hasProfile") == "true") ? true : false; 
 	}
 
 	ionViewDidEnter(){

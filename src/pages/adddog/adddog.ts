@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ViewChildren } from '@angular/core';
 import { IonicPage, NavController, Item, Platform, NavParams } from 'ionic-angular';
 import { Events } from 'ionic-angular';
 
@@ -20,11 +20,20 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 })
 export class AdddogPage {
   @ViewChild('dogName') dogName$;
+  @ViewChild('playStyle') playStyle$;
+  @ViewChildren('intensity') intensity$;
+  @ViewChild('social') social$;
   uid: string;
   //TODO:
   //Display Dogs in a row, you can create an Update button to another page 
   //and pass both dog ID and Human ID
   did: string;
+  playStyle: number;
+  intensity: number;
+  social: number;
+
+
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events, public   afDB: AngularFireDatabase, private afs: AngularFirestore, private platform: Platform) {
 	
@@ -41,9 +50,14 @@ export class AdddogPage {
 
   addDogName(){
     //This line will create a document in humanProfile collection with the ID
-    this.afs.collection('humanProfile').doc(this.uid).collection("dogs").doc(this.afs.createId()).set({
-      firstName: this.dogName$,
-      humanID: this.uid
+    //this.afs.collection('humanProfile').doc(this.uid).collection("dogs").doc(this.afs.createId()).set({
+    this.afs.collection('dogs').doc(this.afs.createId()).set({
+      firstName: this.dogName$ ? this.dogName$ : "Fido", //Fido is default dog name
+      humanID: this.uid,
+      playStyle: this.playStyle ? this.playStyle : 0,//0 is default for dog data
+      intensity: this.intensity ? this.intensity : 0,
+      social: this.social ? this.social : 0
+
 		});
 
   }
