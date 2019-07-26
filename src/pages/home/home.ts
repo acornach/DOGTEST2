@@ -32,6 +32,7 @@ export class HomePage {
 	uid: string;	//User's ID to grab/write data from database
 	lat: number;
 	long: number;
+	hasProfile: boolean;
 	
   constructor(
 	  	public navCtrl: NavController, 
@@ -70,7 +71,13 @@ export class HomePage {
 		this.navCtrl.push(DogsPage)
 	}
 	
-	ionViewDidLoad(){
+	ionViewWillEnter(){
+		this.hasProfile = (localStorage.getItem("hasProfile") == "true") ? true : false; 
+	}
+
+	ionViewDidEnter(){
+		localStorage.setItem("hasProfile", "true");
+		this.hasProfile = true; //Initialize profile to false until found in database
 		this.uid = localStorage.getItem("uid");//Stores user ID to Local Storage for other pages
 		
 		this.geolocation.getCurrentPosition().then((resp) => {
@@ -85,7 +92,10 @@ export class HomePage {
 		this.afs.doc<Item>('humanProfile/'+this.uid).valueChanges().subscribe( res => {
 			if(res){
 				if(this.lat != undefined && this.long != undefined){
-					//TODO: If they have profile, update their Lat/Long
+					
+					this.hasProfile = true;
+					localStorage.setItem("hasProfile", "true");
+
 					console.log("doc: humanProfile/" + this.uid + " found!");
 					this.afs.collection('humanProfile').doc(this.uid).update({
 						currLat: this.lat,
@@ -115,6 +125,8 @@ export class HomePage {
 			else{
 				console.log("doc: humanProfile/" + this.uid + " not found");
 				//SHOW buttons and force data fill
+				this.hasProfile = false;
+				localStorage.setItem("hasProfile", "false");
 			}
 		});//end afs.doc
 
@@ -187,6 +199,7 @@ export class HomePage {
 					alert("TAPPED!");//DO SOMETHING IF NOTIFICATION IS TAPPED!!!
 				}
 				else{
+					//TODO: HANDLE ALERTS SO IF YOU ARE IN A DIFFERENT SPOT THEY DON"T SHOW UP!
 					//Message alerts come with a sender and a
 					alert("New Message From: " + data.title + "\n" + data.body);//must use key/Value to get message
 				}

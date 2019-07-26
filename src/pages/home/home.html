@@ -9,22 +9,22 @@
 <ion-content padding>
 
 	<div>
-		Welcome, {{ uid }}
+		Welcome, {{ uid }}, {{ hasProfile }}
 	</div>
 	<div padding>
-		<button block ion-button (click)="searching()">Start Searching</button>
+		<button block ion-button [disabled]="!hasProfile" (click)="searching()">Start Searching</button>
 	</div>
 	<div padding>
-		<button block ion-button (click)="yourPals()">Your Pals</button>
+		<button block ion-button [disabled]="!hasProfile" (click)="yourPals()">Your Pals</button>
 	</div>
 	<div padding>
-		<button block ion-button (click)="settings()">Settings</button>
+		<button block ion-button [disabled]="!hasProfile" (click)="settings()">Settings</button>
 	</div>
 	<div padding>
 		<button block ion-button (click)="yourProfile()">Your Profile</button>
 	</div>
 	<div padding>
-		<button block ion-button (click)="addDog()">Add a Dog</button>
+		<button block ion-button [disabled]="!hasProfile" (click)="addDog()">Add a Dog</button>
 	</div>
 <!--	<div padding>
 		<button block ion-button (click)="dogs()">See My Dogs</button>
